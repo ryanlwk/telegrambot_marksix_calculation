@@ -18,10 +18,11 @@ else:
 agent = Agent(
     'openrouter:google/gemini-2.5-flash-lite',
     instrument=True,
-    system_prompt="""You are a helpful assistant with access to two specialized tools:
+    system_prompt="""You are a helpful assistant with access to three specialized tools:
 
 1. Calculator - Use this for arithmetic operations (add, subtract, multiply, divide)
 2. Mark Six Result Extractor - Use this to extract Hong Kong Mark 6 lottery results from images
+3. Mark Six History Query - Use this to query historical Mark Six lottery data
 
 When asked to perform calculations, use the calculator tool. Recognize common math notation:
 - "/" or "÷" means divide
@@ -36,6 +37,9 @@ After extracting Mark Six results, present them in a clear, user-friendly format
 - Draw number and date
 - The 6 main numbers
 - The bonus number
+
+When asked about historical Mark Six data (latest results, frequency, statistics), use the query_mark_six_history tool.
+Examples: "What's the latest result?", "How often has number 7 appeared?", "Show me the last 5 draws"
 
 Always provide clear and friendly responses to the user."""
 )
@@ -148,3 +152,98 @@ async def extract_mark_six_from_image(ctx: RunContext, image_path: str) -> str:
 ⭐ Bonus: {mark_six_data.bonus_number}"""
     
     return formatted_result
+
+
+@agent.tool
+def query_mark_six_history(
+    ctx: RunContext,
+    query_type: str,
+    number: int | None = None,
+    limit: int = 10
+) -> str:
+    """Query historical Mark Six lottery data from the database.
+    
+    Args:
+        ctx: Run context
+        query_type: Type of query - 'latest', 'frequency', 'stats'
+        number: Specific number to check frequency (1-49), required for 'frequency' type
+        limit: Number of results to return (default 10)
+    
+    Returns:
+        Formatted string with query results
+    """
+    import pandas as pd
+    from pathlib import Path
+    from collections import Counter
+    
+    csv_path = Path(__file__).parent / "history.csv"
+    
+    if not csv_path.exists():
+        return "Historical data not available. Please update the database first."
+    
+    try:
+        df = pd.read_csv(csv_path)
+        df["date"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
+    except Exception as e:
+        return f"Error reading historical data: {str(e)}"
+    
+    if len(df) == 0:
+        return "No historical data available."
+    
+    query_type = query_type.lower().strip()
+    
+    if query_type == "latest":
+        result_lines = [f"Latest {min(limit, len(df))} Mark Six Results:\n"]
+        for idx, row in df.head(limit).iterrows():
+            nums = f"{row['n1']}, {row['n2']}, {row['n3']}, {row['n4']}, {row['n5']}, {row['n6']}"
+            extra = f"{int(row['special_number'])}" if pd.notna(row['special_number']) else "N/A"
+            result_lines.append(f"📅 {row['date']}: {nums} + Extra: {extra}")
+        return "\n".join(result_lines)
+    
+    elif query_type == "frequency":
+        if number is None:
+            return "Please specify a number (1-49) to check its frequency."
+        
+        if not (1 <= number <= 49):
+            return "Number must be between 1 and 49."
+        
+        count = 0
+        for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
+            count += (df[col] == number).sum()
+        
+        extra_count = 0
+        if 'special_number' in df.columns:
+            extra_count = (df['special_number'] == number).sum()
+        
+        total_draws = len(df)
+        percentage = (count / total_draws * 100) if total_draws > 0 else 0
+        
+        result = f"""Frequency Analysis for Number {number}:
+📊 Appeared {count} times in main 6 numbers (out of {total_draws} draws)
+📈 Frequency: {percentage:.1f}%
+⭐ Appeared {extra_count} times as Extra number"""
+        
+        return result
+    
+    elif query_type == "stats":
+        all_nums = []
+        for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
+            all_nums.extend(df[col].tolist())
+        
+        freq = Counter(all_nums)
+        top_10 = freq.most_common(10)
+        bottom_10 = freq.most_common()[-10:]
+        
+        result_lines = [f"Statistics from {len(df)} draws ({df['date'].iloc[-1]} to {df['date'].iloc[0]}):\n"]
+        result_lines.append("🔥 TOP 10 MOST FREQUENT:")
+        for num, count in top_10:
+            result_lines.append(f"  Number {num}: {count} times")
+        
+        result_lines.append("\n❄️ LEAST FREQUENT (Bottom 10):")
+        for num, count in reversed(bottom_10):
+            result_lines.append(f"  Number {num}: {count} times")
+        
+        return "\n".join(result_lines)
+    
+    else:
+        return f"Unknown query type: {query_type}. Use 'latest', 'frequency', or 'stats'."

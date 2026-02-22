@@ -57,6 +57,7 @@ An AI-powered Telegram bot that integrates the Pydantic AI agent with calculator
 **Features:**
 - **Calculator**: Ask math questions like "What is 125 * 48?" or "Calculate 1000 divided by 25". Supports `/`, `*`, `+`, `-` symbols
 - **Mark Six Extractor**: Send an image of Mark Six lottery results, and the bot will extract the structured data using vision AI. Images are automatically optimized for faster processing
+- **Mark Six History Query**: Ask about historical lottery data like "What's the latest result?", "How often has number 7 appeared?", or "Show me statistics"
 
 **Run it:**
 ```bash
@@ -70,6 +71,7 @@ uv run agentbot.py
 2. Send `/start` to see capabilities
 3. Send text for calculations: "What is 50 + 30?"
 4. Send a photo of Mark Six results for extraction
+5. Ask about historical data: "What's the latest result?" or "How often has number 7 appeared?"
 
 ### echobot.py
 A simple Telegram bot that echoes back any text message it receives. Supports `/start` and `/help` commands.
@@ -82,8 +84,22 @@ uv run echobot.py
 **Requirements:** Set `TELEGRAM_BOT_TOKEN` in your `.env` file.
 
 ### agent_setup.py
-Shared agent configuration module containing the Pydantic AI agent setup with calculator and Mark Six vision tools. Imported by both `main.py` and `agentbot.py`.
+Shared agent configuration module containing the Pydantic AI agent setup with three specialized tools:
+- **Calculator**: Arithmetic operations with support for common math symbols
+- **Mark Six Vision Extractor**: Extract lottery results from images using vision AI
+- **Mark Six History Query**: Query historical lottery data from CSV database
+
+Imported by both `main.py` and `agentbot.py`.
 
 ### models.py
 Contains Pydantic models for data validation:
 - `MarkSixResult`: Validates Hong Kong Mark 6 lottery results with field validation for draw numbers, dates, main numbers (6 unique numbers between 1-49), and bonus number (must not be in main numbers).
+
+### history.csv
+Historical Mark Six lottery data (50+ draws from 2025-09 to 2026-02). Used by the `query_mark_six_history` tool to answer questions about past results, frequency analysis, and statistics.
+
+**Query examples via Telegram bot:**
+- "What's the latest result?"
+- "How often has number 7 appeared?"
+- "Show me the last 5 draws"
+- "Show me statistics"

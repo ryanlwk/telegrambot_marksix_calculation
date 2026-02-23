@@ -16,7 +16,7 @@ else:
     print("Authentication failed. Please check your credentials and host.")
 
 agent = Agent(
-    'openrouter:google/gemini-2.5-flash-lite',
+    'openrouter:google/gemini-2.0-flash-001',
     instrument=True,
     system_prompt="""You are a helpful assistant with access to three specialized tools:
 
@@ -24,13 +24,28 @@ agent = Agent(
 2. Mark Six Result Extractor - Use this to extract Hong Kong Mark 6 lottery results from images
 3. Mark Six History Query - Use this to query historical Mark Six lottery data
 
-When asked to perform calculations, use the calculator tool. Recognize common math notation:
-- "/" or "÷" means divide
-- "*" or "×" or "x" means multiply
-- "+" means add
-- "-" means subtract
+CRITICAL RULE: When ANY tool returns a result, YOU MUST output the EXACT tool result WITHOUT ANY MODIFICATIONS.
+- Do NOT rephrase or rewrite the response
+- Do NOT add explanations or commentary
+- Do NOT remove emojis or formatting
+- Return the tool's output verbatim, character-by-character
 
-Examples: "125 * 48", "1000 / 25", "50 + 30", "100 - 25"
+Example: If tool returns "📊 Appeared 5 times...", you respond EXACTLY: "📊 Appeared 5 times..."
+
+When asked to perform calculations, use the calculator tool. 
+
+IMPORTANT: For ANY arithmetic expression, ALWAYS call calculator(expression="...") with the full expression string.
+- Simple: "1-9" → calculator(expression="1-9")
+- Complex: "1+2/3" → calculator(expression="1+2/3")
+- Very complex: "2/4+3*5-1/2*7" → calculator(expression="2/4+3*5-1/2*7")
+
+Do NOT try to parse or break down expressions yourself. Pass them directly to the calculator tool.
+
+The calculator supports:
+- All basic operators: +, -, *, /, ** (power)
+- Parentheses: (1+2)*3
+- Order of operations (PEMDAS)
+- Alternate symbols: ×, ÷
 
 When asked to analyze lottery result images, use the extract_mark_six_from_image tool with the provided image path.
 After extracting Mark Six results, present them in a clear, user-friendly format with:
@@ -45,7 +60,7 @@ Always provide clear and friendly responses to the user."""
 )
 
 mark_six_vision_agent = Agent(
-    'openrouter:google/gemini-2.5-flash-lite',
+    'openrouter:google/gemini-2.0-flash-001',
     output_type=MarkSixResult,
     retries=3,
     system_prompt="""Analyze images containing Hong Kong Mark 6 lottery results and extract the lottery information.
@@ -65,13 +80,24 @@ VALIDATION RULES:
 
 
 @agent.tool
-def calculator(ctx: RunContext, number1: float, number2: float, operation: str) -> float:
-    """Perform simple arithmetic operations.
+def calculator(
+    ctx: RunContext, 
+    number1: float | None = None, 
+    number2: float | None = None, 
+    operation: str | None = None,
+    expression: str | None = None
+) -> float:
+    """Perform arithmetic operations including complex expressions.
+    
+    Can be used in two ways:
+    1. Separate parameters: calculator(number1=1, number2=9, operation="-")
+    2. Expression string: calculator(expression="1-9") or calculator(expression="1+2/3")
     
     Args:
         ctx: Run context
-        number1: First number
-        number2: Second number
+        expression: Arithmetic expression like "1-9", "5+3", "1+2/3", "(1+2)*3" (optional)
+        number1: First number (optional if expression provided)
+        number2: Second number (optional if expression provided)
         operation: Operation to perform. Accepts:
             - 'add', '+' for addition
             - 'subtract', '-' for subtraction
@@ -81,6 +107,22 @@ def calculator(ctx: RunContext, number1: float, number2: float, operation: str) 
     Returns:
         Result of the calculation
     """
+    from simpleeval import simple_eval
+    
+    # If expression provided, use simpleeval for safe evaluation
+    if expression:
+        try:
+            # Replace alternate operators with standard ones
+            expression = expression.replace('×', '*').replace('÷', '/')
+            result = simple_eval(expression.strip())
+            return float(result)
+        except Exception as e:
+            raise ValueError(f"Cannot evaluate expression: {expression}. Error: {str(e)}")
+    
+    # Validate required parameters
+    if number1 is None or number2 is None or operation is None:
+        raise ValueError("Must provide either expression or (number1, number2, operation)")
+    
     operation = operation.lower().strip()
     
     if operation in ['add', '+']:
@@ -147,7 +189,7 @@ async def extract_mark_six_from_image(ctx: RunContext, image_path: str) -> str:
     mark_six_data = result.output
     
     formatted_result = f"""Mark Six Results Extracted:
-📅 Draw #{mark_six_data.draw_number} - {mark_six_data.draw_date}
+Draw #{mark_six_data.draw_number} - {mark_six_data.draw_date}
 🎱 Numbers: {', '.join(map(str, mark_six_data.numbers))}
 ⭐ Bonus: {mark_six_data.bonus_number}"""
     
@@ -197,7 +239,7 @@ def query_mark_six_history(
         for idx, row in df.head(limit).iterrows():
             nums = f"{row['n1']}, {row['n2']}, {row['n3']}, {row['n4']}, {row['n5']}, {row['n6']}"
             extra = f"{int(row['special_number'])}" if pd.notna(row['special_number']) else "N/A"
-            result_lines.append(f"📅 {row['date']}: {nums} + Extra: {extra}")
+            result_lines.append(f"{row['date']}: {nums} + Extra: {extra}")
         return "\n".join(result_lines)
     
     elif query_type == "frequency":

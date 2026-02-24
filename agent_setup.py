@@ -18,11 +18,12 @@ else:
 agent = Agent(
     'openrouter:google/gemini-2.0-flash-001',
     instrument=True,
-    system_prompt="""You are a helpful assistant with access to three specialized tools:
+    system_prompt="""You are a helpful assistant with access to four specialized tools:
 
 1. Calculator - Use this for arithmetic operations (add, subtract, multiply, divide)
 2. Mark Six Result Extractor - Use this to extract Hong Kong Mark 6 lottery results from images
 3. Mark Six History Query - Use this to query historical Mark Six lottery data
+4. Mark Six Trend Chart Generator - Use this to generate a visual chart of number frequencies
 
 CRITICAL RULE: When ANY tool returns a result, YOU MUST output the EXACT tool result WITHOUT ANY MODIFICATIONS.
 - Do NOT rephrase or rewrite the response
@@ -55,6 +56,8 @@ After extracting Mark Six results, present them in a clear, user-friendly format
 
 When asked about historical Mark Six data (latest results, frequency, statistics), use the query_mark_six_history tool.
 Examples: "What's the latest result?", "How often has number 7 appeared?", "Show me the last 5 draws"
+
+When asked to generate a trend chart or visualize number frequencies, use the generate_marksix_trend_chart tool.
 
 Always provide clear and friendly responses to the user."""
 )
@@ -289,3 +292,72 @@ def query_mark_six_history(
     
     else:
         return f"Unknown query type: {query_type}. Use 'latest', 'frequency', or 'stats'."
+
+
+@agent.tool
+def generate_marksix_trend_chart(ctx: RunContext) -> str:
+    """Generate a trend chart showing the frequency of Mark Six numbers (1-49) from historical data.
+    
+    Args:
+        ctx: Run context
+    
+    Returns:
+        Success message with chart file path
+    """
+    import matplotlib
+    matplotlib.use('Agg')  # Use non-interactive backend for worker threads
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    from pathlib import Path
+    from collections import Counter
+    
+    csv_path = Path(__file__).parent / "history.csv"
+    
+    if not csv_path.exists():
+        return "ERROR: Historical data file (history.csv) not found."
+    
+    try:
+        df = pd.read_csv(csv_path)
+    except Exception as e:
+        return f"ERROR: Failed to read history.csv: {str(e)}"
+    
+    if len(df) == 0:
+        return "ERROR: No historical data available in history.csv."
+    
+    # Extract all winning numbers (n1 to n6)
+    all_numbers = []
+    for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
+        if col in df.columns:
+            all_numbers.extend(df[col].tolist())
+    
+    # Calculate frequency for numbers 1-49
+    frequency = Counter(all_numbers)
+    
+    # Ensure all numbers 1-49 are represented (even if frequency is 0)
+    numbers = list(range(1, 50))
+    frequencies = [frequency.get(num, 0) for num in numbers]
+    
+    # Generate bar chart
+    plt.figure(figsize=(16, 8))
+    bars = plt.bar(numbers, frequencies, color='steelblue', edgecolor='black', linewidth=0.5)
+    
+    # Highlight top 10 most frequent numbers
+    top_10 = frequency.most_common(10)
+    top_10_nums = [num for num, _ in top_10]
+    for bar, num in zip(bars, numbers):
+        if num in top_10_nums:
+            bar.set_color('orangered')
+    
+    plt.xlabel('Number (1-49)', fontsize=12, fontweight='bold')
+    plt.ylabel('Frequency', fontsize=12, fontweight='bold')
+    plt.title(f'Mark Six Number Frequency Analysis ({len(df)} draws)', fontsize=14, fontweight='bold')
+    plt.xticks(range(1, 50, 2))  # Show every other number for readability
+    plt.grid(axis='y', alpha=0.3, linestyle='--')
+    plt.tight_layout()
+    
+    # Save chart
+    output_path = Path(__file__).parent / "chart_output.png"
+    plt.savefig(output_path, dpi=150, bbox_inches='tight')
+    plt.close()
+    
+    return f"SUCCESS: Trend chart generated at chart_output.png"

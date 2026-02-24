@@ -52,7 +52,7 @@ uv run main.py
 ```
 
 ### agentbot.py
-An AI-powered Telegram bot that integrates the Pydantic AI agent with calculator and Mark Six vision capabilities.
+An AI-powered Telegram bot that integrates the Pydantic AI agent with calculator, Mark Six vision, and automated scheduling capabilities.
 
 **Features:**
 - **Advanced Calculator**: Handles simple and complex arithmetic expressions
@@ -62,13 +62,28 @@ An AI-powered Telegram bot that integrates the Pydantic AI agent with calculator
   - Powered by `simpleeval` for safe expression evaluation
 - **Mark Six Extractor**: Send an image of Mark Six lottery results, and the bot will extract the structured data using vision AI. Images are automatically optimized for faster processing
 - **Mark Six History Query**: Ask about historical lottery data like "What's the latest result?", "How often has number 7 appeared?", or "Show me statistics"
+- **Mark Six Trend Chart Generator**: Generate visual frequency analysis charts showing how often each number (1-49) has appeared
+  - Bar chart with top 10 most frequent numbers highlighted in red
+  - Automatically saves as `chart_output.png`
+  - Available via `/stats` command
+- **Automated Scheduled Updates**: Bot automatically sends trend charts every Tuesday, Thursday, and Saturday at 22:30 HKT
+  - Fetches latest data from Mark Six website
+  - Generates fresh trend chart
+  - Sends update to configured chat ID
 
 **Run it:**
 ```bash
 uv run agentbot.py
 ```
 
-**Requirements:** Set `TELEGRAM_BOT_TOKEN` in your `.env` file.
+**Requirements:** 
+- Set `TELEGRAM_BOT_TOKEN` in your `.env` file
+- Set `TARGET_CHAT_ID` in your `.env` file for automated updates
+
+**Commands:**
+- `/start` - Show welcome message and bot capabilities
+- `/help` - Show help message with usage instructions
+- `/stats` - Generate and send Mark Six trend chart immediately
 
 **Usage:**
 1. Start a chat with your bot in Telegram
@@ -78,6 +93,8 @@ uv run agentbot.py
    - Complex: "1+2/3" or "2/4+3*5-1/27"
 4. Send a photo of Mark Six results for extraction
 5. Ask about historical data: "What's the latest result?" or "How often has number 7 appeared?"
+6. Use `/stats` to generate a trend chart on demand
+7. Receive automatic updates every Tue/Thu/Sat at 22:30 HKT
 
 ### echobot.py
 A simple Telegram bot that echoes back any text message it receives. Supports `/start` and `/help` commands.
@@ -90,7 +107,7 @@ uv run echobot.py
 **Requirements:** Set `TELEGRAM_BOT_TOKEN` in your `.env` file.
 
 ### agent_setup.py
-Shared agent configuration module containing the Pydantic AI agent setup with three specialized tools:
+Shared agent configuration module containing the Pydantic AI agent setup with four specialized tools:
 - **Advanced Calculator**: 
   - Supports complex expressions: "1+2/3", "2/4+3*5-1/27", "(2+3)*(4-1)"
   - Handles order of operations, parentheses, power (**), decimals, negative numbers
@@ -98,10 +115,25 @@ Shared agent configuration module containing the Pydantic AI agent setup with th
   - Can be called with expression string or separate parameters
 - **Mark Six Vision Extractor**: Extract lottery results from images using vision AI
 - **Mark Six History Query**: Query historical lottery data from CSV database
+- **Mark Six Trend Chart Generator**: Generate visual frequency analysis charts
+  - Reads historical data from `history.csv`
+  - Calculates frequency for numbers 1-49
+  - Creates bar chart with matplotlib (using 'Agg' backend for thread safety)
+  - Highlights top 10 most frequent numbers in red
+  - Saves as `chart_output.png`
 
 **Models:**
 - Main Agent: Google Gemini 2.0 Flash ($0.10/$0.40 per 1M tokens)
 - Vision Agent: Google Gemini 2.0 Flash (same model for consistency)
+
+**Dependencies:**
+- `pydantic-ai-slim`: AI agent framework
+- `python-telegram-bot`: Telegram bot integration
+- `simpleeval`: Safe expression evaluation
+- `pillow`: Image processing and optimization
+- `pandas`: CSV data processing
+- `matplotlib`: Chart generation
+- `pytz`: Timezone handling for scheduled jobs
 
 Imported by both `main.py` and `agentbot.py`.
 

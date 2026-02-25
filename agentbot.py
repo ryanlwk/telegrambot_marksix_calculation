@@ -36,7 +36,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "2️⃣ <b>Mark Six Extractor</b>: Send me an image of Mark Six lottery results\n"
         "3️⃣ <b>Mark Six History</b>: Ask about historical data like 'What's the latest result?'\n"
         "4️⃣ <b>Trend Charts</b>: Use /stats to generate a frequency chart\n\n"
-        "📊 <b>Auto-Updates:</b> I'll send trend charts every Tue/Thu/Sat at 10:30 PM HKT!\n\n"
+        "📊 <b>Auto-Updates:</b> I'll send trend charts daily at 9:30 PM HKT!\n\n"
         "Try it out!"
     )
 
@@ -66,7 +66,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         result = await agent.run("Generate the latest trend chart.")
         
         # Send the chart
-        chart_path = Path(__file__).parent / "chart_output.png"
+        chart_path = Path(__file__).parent / "charts" / "chart_output.png"
         if chart_path.exists():
             await update.message.reply_photo(
                 photo=open(chart_path, 'rb'),
@@ -97,6 +97,14 @@ async def scheduled_marksix_update(context: ContextTypes.DEFAULT_TYPE) -> None:
             )
             if result.returncode != 0:
                 logger.error(f"fetch_data.py failed: {result.stderr}")
+            else:
+                # Copy updated history.csv from subdirectory to main directory
+                import shutil
+                src = Path(__file__).parent / "mark_six_history copy" / "history.csv"
+                dst = Path(__file__).parent / "history.csv"
+                if src.exists():
+                    shutil.copy(src, dst)
+                    logger.info(f"Updated history.csv copied to main directory")
         
         # Step 2: Generate trend chart
         logger.info("Generating trend chart...")
@@ -107,7 +115,7 @@ async def scheduled_marksix_update(context: ContextTypes.DEFAULT_TYPE) -> None:
             logger.error("TARGET_CHAT_ID not set in environment")
             return
         
-        chart_path = Path(__file__).parent / "chart_output.png"
+        chart_path = Path(__file__).parent / "charts" / "chart_output.png"
         if chart_path.exists():
             await context.bot.send_photo(
                 chat_id=TARGET_CHAT_ID,
@@ -201,19 +209,16 @@ def main() -> None:
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     
-    # Schedule automated updates - Tuesday, Thursday, Saturday at 22:30 HKT
+    # Schedule automated updates - Daily at 21:30 HKT (9:30 PM)
     job_queue = application.job_queue
     
-    # Add job for each day
-    for day in [1, 3, 5]:  # 1=Tuesday, 3=Thursday, 5=Saturday
-        job_queue.run_daily(
-            scheduled_marksix_update,
-            time=time(hour=22, minute=30, tzinfo=hk_tz),
-            days=(day,),
-            name=f"marksix_update_day_{day}"
-        )
+    job_queue.run_daily(
+        scheduled_marksix_update,
+        time=time(hour=21, minute=30, tzinfo=hk_tz),
+        name="marksix_daily_update"
+    )
     
-    logger.info("Bot started with scheduled jobs (Tue/Thu/Sat at 22:30 HKT). Press Ctrl-C to stop.")
+    logger.info("Bot started with scheduled job (Daily at 21:30 HKT / 9:30 PM). Press Ctrl-C to stop.")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 

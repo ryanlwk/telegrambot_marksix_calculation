@@ -18,6 +18,8 @@ else:
 agent = Agent(
     'openrouter:google/gemini-2.0-flash-001',
     instrument=True,
+    retries=3,
+    output_type=str,
     system_prompt="""You are a helpful assistant with access to four specialized tools:
 
 1. Calculator - Use this for arithmetic operations (add, subtract, multiply, divide)
@@ -25,15 +27,7 @@ agent = Agent(
 3. Mark Six History Query - Use this to query historical Mark Six lottery data
 4. Mark Six Trend Chart Generator - Use this to generate a visual chart of number frequencies
 
-CRITICAL RULE: When ANY tool returns a result, YOU MUST output the EXACT tool result WITHOUT ANY MODIFICATIONS.
-- Do NOT rephrase or rewrite the response
-- Do NOT add explanations or commentary
-- Do NOT remove emojis or formatting
-- Return the tool's output verbatim, character-by-character
-
-Example: If tool returns "📊 Appeared 5 times...", you respond EXACTLY: "📊 Appeared 5 times..."
-
-When asked to perform calculations, use the calculator tool. 
+When asked to perform calculations, use the calculator tool and provide the result in a clear, friendly way. 
 
 IMPORTANT: For ANY arithmetic expression, ALWAYS call calculator(expression="...") with the full expression string.
 - Simple: "1-9" → calculator(expression="1-9")
@@ -356,8 +350,10 @@ def generate_marksix_trend_chart(ctx: RunContext) -> str:
     plt.tight_layout()
     
     # Save chart
-    output_path = Path(__file__).parent / "chart_output.png"
+    charts_dir = Path(__file__).parent / "charts"
+    charts_dir.mkdir(exist_ok=True)
+    output_path = charts_dir / "chart_output.png"
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     plt.close()
     
-    return f"SUCCESS: Trend chart generated at chart_output.png"
+    return f"SUCCESS: Trend chart generated at charts/chart_output.png"

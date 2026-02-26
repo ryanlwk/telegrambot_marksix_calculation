@@ -1,0 +1,19 @@
+services:
+  mark-six-bot:
+    build: .
+    # 測試期間建議先設為 no，避免程式報錯時不斷重啟消耗資源
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      # 確保歷史數據持久化
+      - ./history.csv:/app/history.csv
+      # 確保圖表能正確輸出到宿主機
+      - ./charts:/app/charts
+      # 修正 Cursor 提到的：增加暫存資料夾掛載，防止容器內部空間膨脹
+      - ./temp_images:/app/temp_images
+
+    # 針對 1GB RAM 的額外保護設定
+    deploy:
+      resources:
+        limits:
+          memory: 800M

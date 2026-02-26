@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+temp_images/
+chart_output.png
+charts/
+mark_six_history copy/
+.git/
+.cursor/
+*.log

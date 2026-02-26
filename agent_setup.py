@@ -156,22 +156,25 @@ async def extract_mark_six_from_image(ctx: RunContext, image_path: str) -> str:
     if not path.exists():
         raise ValueError(f"Image file not found: {image_path}")
     
-    img = Image.open(path)
-    
-    max_dimension = 1024
-    if max(img.size) > max_dimension:
-        ratio = max_dimension / max(img.size)
-        new_size = tuple(int(dim * ratio) for dim in img.size)
-        img = img.resize(new_size, Image.Resampling.LANCZOS)
-    
-    buffer = io.BytesIO()
-    img.save(buffer, format='JPEG', quality=85, optimize=True)
-    image_data = buffer.getvalue()
-    
-    media_type = 'image/jpeg'
-    
-    logger.info(f"Processing image: {path.name}, size: {img.size}")
+    img = None
+    buffer = None
     try:
+        img = Image.open(path)
+        
+        max_dimension = 1024
+        if max(img.size) > max_dimension:
+            ratio = max_dimension / max(img.size)
+            new_size = tuple(int(dim * ratio) for dim in img.size)
+            img = img.resize(new_size, Image.Resampling.LANCZOS)
+        
+        buffer = io.BytesIO()
+        img.save(buffer, format='JPEG', quality=85, optimize=True)
+        image_data = buffer.getvalue()
+        
+        media_type = 'image/jpeg'
+        
+        logger.info(f"Processing image: {path.name}, size: {img.size}")
+        
         result = await mark_six_vision_agent.run(
             [
                 "Extract the Mark Six lottery results from this image.",
@@ -182,6 +185,12 @@ async def extract_mark_six_from_image(ctx: RunContext, image_path: str) -> str:
     except Exception as e:
         logger.error(f"Vision agent failed: {e}")
         raise
+    finally:
+        # Cleanup memory
+        if buffer:
+            buffer.close()
+        if img:
+            img.close()
     
     mark_six_data = result.output
     
@@ -214,78 +223,87 @@ def query_mark_six_history(
     import pandas as pd
     from pathlib import Path
     from collections import Counter
+    import gc
     
     csv_path = Path(__file__).parent / "history.csv"
     
     if not csv_path.exists():
         return "Historical data not available. Please update the database first."
     
+    df = None
     try:
         df = pd.read_csv(csv_path)
         df["date"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
-    except Exception as e:
-        return f"Error reading historical data: {str(e)}"
-    
-    if len(df) == 0:
-        return "No historical data available."
-    
-    query_type = query_type.lower().strip()
-    
-    if query_type == "latest":
-        result_lines = [f"Latest {min(limit, len(df))} Mark Six Results:\n"]
-        for idx, row in df.head(limit).iterrows():
-            nums = f"{row['n1']}, {row['n2']}, {row['n3']}, {row['n4']}, {row['n5']}, {row['n6']}"
-            extra = f"{int(row['special_number'])}" if pd.notna(row['special_number']) else "N/A"
-            result_lines.append(f"{row['date']}: {nums} + Extra: {extra}")
-        return "\n".join(result_lines)
-    
-    elif query_type == "frequency":
-        if number is None:
-            return "Please specify a number (1-49) to check its frequency."
         
-        if not (1 <= number <= 49):
-            return "Number must be between 1 and 49."
+        if len(df) == 0:
+            return "No historical data available."
         
-        count = 0
-        for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
-            count += (df[col] == number).sum()
+        query_type = query_type.lower().strip()
         
-        extra_count = 0
-        if 'special_number' in df.columns:
-            extra_count = (df['special_number'] == number).sum()
+        if query_type == "latest":
+            result_lines = [f"Latest {min(limit, len(df))} Mark Six Results:\n"]
+            for idx, row in df.head(limit).iterrows():
+                nums = f"{row['n1']}, {row['n2']}, {row['n3']}, {row['n4']}, {row['n5']}, {row['n6']}"
+                extra = f"{int(row['special_number'])}" if pd.notna(row['special_number']) else "N/A"
+                result_lines.append(f"{row['date']}: {nums} + Extra: {extra}")
+            return "\n".join(result_lines)
         
-        total_draws = len(df)
-        percentage = (count / total_draws * 100) if total_draws > 0 else 0
-        
-        result = f"""Frequency Analysis for Number {number}:
+        elif query_type == "frequency":
+            if number is None:
+                return "Please specify a number (1-49) to check its frequency."
+            
+            if not (1 <= number <= 49):
+                return "Number must be between 1 and 49."
+            
+            count = 0
+            for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
+                count += (df[col] == number).sum()
+            
+            extra_count = 0
+            if 'special_number' in df.columns:
+                extra_count = (df['special_number'] == number).sum()
+            
+            total_draws = len(df)
+            percentage = (count / total_draws * 100) if total_draws > 0 else 0
+            
+            result = f"""Frequency Analysis for Number {number}:
 📊 Appeared {count} times in main 6 numbers (out of {total_draws} draws)
 📈 Frequency: {percentage:.1f}%
 ⭐ Appeared {extra_count} times as Extra number"""
+            
+            return result
         
-        return result
-    
-    elif query_type == "stats":
-        all_nums = []
-        for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
-            all_nums.extend(df[col].tolist())
+        elif query_type == "stats":
+            all_nums = []
+            for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
+                all_nums.extend(df[col].tolist())
+            
+            freq = Counter(all_nums)
+            top_10 = freq.most_common(10)
+            bottom_10 = freq.most_common()[-10:]
+            
+            result_lines = [f"Statistics from {len(df)} draws ({df['date'].iloc[-1]} to {df['date'].iloc[0]}):\n"]
+            result_lines.append("🔥 TOP 10 MOST FREQUENT:")
+            for num, count in top_10:
+                result_lines.append(f"  Number {num}: {count} times")
+            
+            result_lines.append("\n❄️ LEAST FREQUENT (Bottom 10):")
+            for num, count in reversed(bottom_10):
+                result_lines.append(f"  Number {num}: {count} times")
+            
+            return "\n".join(result_lines)
         
-        freq = Counter(all_nums)
-        top_10 = freq.most_common(10)
-        bottom_10 = freq.most_common()[-10:]
-        
-        result_lines = [f"Statistics from {len(df)} draws ({df['date'].iloc[-1]} to {df['date'].iloc[0]}):\n"]
-        result_lines.append("🔥 TOP 10 MOST FREQUENT:")
-        for num, count in top_10:
-            result_lines.append(f"  Number {num}: {count} times")
-        
-        result_lines.append("\n❄️ LEAST FREQUENT (Bottom 10):")
-        for num, count in reversed(bottom_10):
-            result_lines.append(f"  Number {num}: {count} times")
-        
-        return "\n".join(result_lines)
-    
-    else:
-        return f"Unknown query type: {query_type}. Use 'latest', 'frequency', or 'stats'."
+        else:
+            return f"Unknown query type: {query_type}. Use 'latest', 'frequency', or 'stats'."
+            
+    except Exception as e:
+        logger.error(f"Error querying history: {e}")
+        return "Error querying historical data. Please try again."
+    finally:
+        # Cleanup memory
+        if df is not None:
+            del df
+        gc.collect()
 
 
 @agent.tool
@@ -304,56 +322,66 @@ def generate_marksix_trend_chart(ctx: RunContext) -> str:
     import pandas as pd
     from pathlib import Path
     from collections import Counter
+    import gc
     
     csv_path = Path(__file__).parent / "history.csv"
     
     if not csv_path.exists():
         return "ERROR: Historical data file (history.csv) not found."
     
+    df = None
     try:
         df = pd.read_csv(csv_path)
+        
+        if len(df) == 0:
+            return "ERROR: No historical data available in history.csv."
+        
+        # Extract all winning numbers (n1 to n6)
+        all_numbers = []
+        for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
+            if col in df.columns:
+                all_numbers.extend(df[col].tolist())
+        
+        # Calculate frequency for numbers 1-49
+        frequency = Counter(all_numbers)
+        
+        # Ensure all numbers 1-49 are represented (even if frequency is 0)
+        numbers = list(range(1, 50))
+        frequencies = [frequency.get(num, 0) for num in numbers]
+        
+        # Generate bar chart - optimized for low memory
+        plt.figure(figsize=(12, 6))  # Reduced from 16x8
+        bars = plt.bar(numbers, frequencies, color='steelblue', edgecolor='black', linewidth=0.5)
+        
+        # Highlight top 10 most frequent numbers
+        top_10 = frequency.most_common(10)
+        top_10_nums = [num for num, _ in top_10]
+        for bar, num in zip(bars, numbers):
+            if num in top_10_nums:
+                bar.set_color('orangered')
+        
+        plt.xlabel('Number (1-49)', fontsize=11, fontweight='bold')
+        plt.ylabel('Frequency', fontsize=11, fontweight='bold')
+        plt.title(f'Mark Six Number Frequency Analysis ({len(df)} draws)', fontsize=13, fontweight='bold')
+        plt.xticks(range(1, 50, 2))  # Show every other number for readability
+        plt.grid(axis='y', alpha=0.3, linestyle='--')
+        plt.tight_layout()
+        
+        # Save chart with optimized settings
+        charts_dir = Path(__file__).parent / "charts"
+        charts_dir.mkdir(exist_ok=True)
+        output_path = charts_dir / "chart_output.png"
+        plt.savefig(output_path, dpi=100, bbox_inches='tight')  # Reduced DPI for memory
+        plt.close('all')  # Close all figures
+        
+        return f"SUCCESS: Trend chart generated at charts/chart_output.png"
+        
     except Exception as e:
-        return f"ERROR: Failed to read history.csv: {str(e)}"
-    
-    if len(df) == 0:
-        return "ERROR: No historical data available in history.csv."
-    
-    # Extract all winning numbers (n1 to n6)
-    all_numbers = []
-    for col in ['n1', 'n2', 'n3', 'n4', 'n5', 'n6']:
-        if col in df.columns:
-            all_numbers.extend(df[col].tolist())
-    
-    # Calculate frequency for numbers 1-49
-    frequency = Counter(all_numbers)
-    
-    # Ensure all numbers 1-49 are represented (even if frequency is 0)
-    numbers = list(range(1, 50))
-    frequencies = [frequency.get(num, 0) for num in numbers]
-    
-    # Generate bar chart
-    plt.figure(figsize=(16, 8))
-    bars = plt.bar(numbers, frequencies, color='steelblue', edgecolor='black', linewidth=0.5)
-    
-    # Highlight top 10 most frequent numbers
-    top_10 = frequency.most_common(10)
-    top_10_nums = [num for num, _ in top_10]
-    for bar, num in zip(bars, numbers):
-        if num in top_10_nums:
-            bar.set_color('orangered')
-    
-    plt.xlabel('Number (1-49)', fontsize=12, fontweight='bold')
-    plt.ylabel('Frequency', fontsize=12, fontweight='bold')
-    plt.title(f'Mark Six Number Frequency Analysis ({len(df)} draws)', fontsize=14, fontweight='bold')
-    plt.xticks(range(1, 50, 2))  # Show every other number for readability
-    plt.grid(axis='y', alpha=0.3, linestyle='--')
-    plt.tight_layout()
-    
-    # Save chart
-    charts_dir = Path(__file__).parent / "charts"
-    charts_dir.mkdir(exist_ok=True)
-    output_path = charts_dir / "chart_output.png"
-    plt.savefig(output_path, dpi=150, bbox_inches='tight')
-    plt.close()
-    
-    return f"SUCCESS: Trend chart generated at charts/chart_output.png"
+        logger.error(f"Chart generation error: {e}")
+        return f"ERROR: Failed to generate chart"
+    finally:
+        # Cleanup memory
+        if df is not None:
+            del df
+        plt.close('all')
+        gc.collect()

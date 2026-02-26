@@ -20,6 +20,11 @@ load_dotenv()
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TARGET_CHAT_ID = os.getenv("TARGET_CHAT_ID")
 
+if not TOKEN:
+    raise ValueError("TELEGRAM_BOT_TOKEN not set in environment. Please check your .env file.")
+if not TARGET_CHAT_ID:
+    print("WARNING: TARGET_CHAT_ID not set - scheduled updates will be disabled")
+
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
@@ -36,7 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "2️⃣ <b>Mark Six Extractor</b>: Send me an image of Mark Six lottery results\n"
         "3️⃣ <b>Mark Six History</b>: Ask about historical data like 'What's the latest result?'\n"
         "4️⃣ <b>Trend Charts</b>: Use /stats to generate a frequency chart\n\n"
-        "📊 <b>Auto-Updates:</b> I'll send trend charts daily at 9:30 PM HKT!\n\n"
+        "📊 <b>Auto-Updates:</b> I'll send trend charts daily at 9:35 PM HKT!\n\n"
         "Try it out!"
     )
 
@@ -68,16 +73,17 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         # Send the chart
         chart_path = Path(__file__).parent / "charts" / "chart_output.png"
         if chart_path.exists():
-            await update.message.reply_photo(
-                photo=open(chart_path, 'rb'),
-                caption=f"📊 Mark Six Number Frequency Trend Chart\n\n{result.output}"
-            )
+            with open(chart_path, 'rb') as f:
+                await update.message.reply_photo(
+                    photo=f,
+                    caption=f"📊 Mark Six Number Frequency Trend Chart\n\n{result.output}"
+                )
         else:
-            await update.message.reply_text(f"Chart generation failed: {result.output}")
+            await update.message.reply_text("Chart generation failed. Please try again later.")
             
     except Exception as e:
         logger.error(f"Error generating chart: {e}", exc_info=True)
-        await update.message.reply_text(f"Sorry, I couldn't generate the chart: {str(e)}")
+        await update.message.reply_text("Sorry, I couldn't generate the chart. Please try again later.")
 
 
 async def scheduled_marksix_update(context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -90,13 +96,13 @@ async def scheduled_marksix_update(context: ContextTypes.DEFAULT_TYPE) -> None:
         if fetch_script.exists():
             logger.info("Fetching latest Mark Six data...")
             result = subprocess.run(
-                ["uv", "run", "python", str(fetch_script)],
+                ["uv", "run", "python", str(fetch_script.absolute())],
                 capture_output=True,
                 text=True,
-                timeout=60
+                timeout=30
             )
             if result.returncode != 0:
-                logger.error(f"fetch_data.py failed: {result.stderr}")
+                logger.error(f"fetch_data.py failed with code {result.returncode}")
             else:
                 # Copy updated history.csv from subdirectory to main directory
                 import shutil
@@ -104,45 +110,63 @@ async def scheduled_marksix_update(context: ContextTypes.DEFAULT_TYPE) -> None:
                 dst = Path(__file__).parent / "history.csv"
                 if src.exists():
                     shutil.copy(src, dst)
-                    logger.info(f"Updated history.csv copied to main directory")
+                    logger.info("Updated history.csv copied to main directory")
         
         # Step 2: Generate trend chart
         logger.info("Generating trend chart...")
         agent_result = await agent.run("Generate the latest trend chart.")
         
-        # Step 3: Send chart to target chat
+        # Step 3: Send chart to target chat with retry logic
         if not TARGET_CHAT_ID:
             logger.error("TARGET_CHAT_ID not set in environment")
             return
         
         chart_path = Path(__file__).parent / "charts" / "chart_output.png"
         if chart_path.exists():
-            await context.bot.send_photo(
-                chat_id=TARGET_CHAT_ID,
-                photo=open(chart_path, 'rb'),
-                caption=f"📊 Scheduled Mark Six Update\n\n{agent_result.output}"
-            )
-            logger.info(f"Scheduled update sent to chat {TARGET_CHAT_ID}")
+            # Retry logic for Telegram API
+            from telegram.error import TelegramError, NetworkError
+            import asyncio
+            
+            for attempt in range(3):
+                try:
+                    with open(chart_path, 'rb') as f:
+                        await context.bot.send_photo(
+                            chat_id=TARGET_CHAT_ID,
+                            photo=f,
+                            caption=f"📊 Scheduled Mark Six Update\n\n{agent_result.output}"
+                        )
+                    logger.info(f"Scheduled update sent to chat {TARGET_CHAT_ID}")
+                    break
+                except (TelegramError, NetworkError) as e:
+                    if attempt < 2:
+                        logger.warning(f"Telegram API error (attempt {attempt + 1}/3): {e}")
+                        await asyncio.sleep(5)
+                    else:
+                        logger.error(f"Failed to send after 3 attempts: {e}")
+                        raise
         else:
             logger.error("Chart file not found after generation")
             await context.bot.send_message(
                 chat_id=TARGET_CHAT_ID,
-                text=f"⚠️ Scheduled update failed: {agent_result.output}"
+                text="⚠️ Scheduled update failed: Chart generation error"
             )
             
     except Exception as e:
         logger.error(f"Scheduled update error: {e}", exc_info=True)
         if TARGET_CHAT_ID:
-            await context.bot.send_message(
-                chat_id=TARGET_CHAT_ID,
-                text=f"⚠️ Scheduled update encountered an error: {str(e)}"
-            )
+            try:
+                await context.bot.send_message(
+                    chat_id=TARGET_CHAT_ID,
+                    text="⚠️ Scheduled update encountered an error. Check logs for details."
+                )
+            except Exception:
+                logger.error("Failed to send error notification")
 
 
 async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle text messages by passing them to the AI agent."""
     user_message = update.message.text
-    logger.info(f"User message: {user_message}")
+    logger.info(f"User message received (length: {len(user_message)})")
     
     try:
         await update.message.chat.send_action("typing")
@@ -152,14 +176,15 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         await update.message.reply_text(result.output)
         
     except Exception as e:
-        logger.error(f"Error processing message: {e}")
+        logger.error(f"Error processing message: {e}", exc_info=True)
         await update.message.reply_text(
-            f"Sorry, I encountered an error: {str(e)}"
+            "Sorry, I encountered an error processing your request. Please try again."
         )
 
 
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle photo messages by downloading and passing to the Mark Six extractor."""
+    temp_path = None
     try:
         await update.message.chat.send_action("typing")
         
@@ -173,29 +198,55 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         temp_path = temp_dir / f"{photo.file_id}.jpg"
         await photo_file.download_to_drive(temp_path)
         
-        logger.info(f"Downloaded image to {temp_path}")
+        logger.info(f"Downloaded image (size: {temp_path.stat().st_size} bytes)")
         
         prompt = f"Please extract the Mark Six lottery results from the image at: {temp_path}. Format the response in a clear, readable way for the user."
         result = await agent.run(prompt)
         
-        logger.info(f"Agent response: {result.output}")
+        logger.info("Agent processing completed")
         
         await update.message.reply_text(result.output)
-        
-        temp_path.unlink()
-        logger.info(f"Deleted temporary file {temp_path}")
         
     except Exception as e:
         logger.error(f"Error processing image: {e}", exc_info=True)
         await update.message.reply_text(
-            f"Sorry, I couldn't process the image: {str(e)}"
+            "Sorry, I couldn't process the image. Please try again with a clearer image."
         )
+    finally:
+        # Always cleanup temp file
+        if temp_path and temp_path.exists():
+            temp_path.unlink()
+            logger.info("Deleted temporary file")
 
 
 def main() -> None:
     """Start the bot."""
     # Set timezone
     hk_tz = pytz.timezone('Asia/Hong_Kong')
+    
+    # Fetch latest data on startup
+    logger.info("Fetching latest Mark Six data on startup...")
+    fetch_script = Path(__file__).parent / "mark_six_history copy" / "fetch_data.py"
+    if fetch_script.exists():
+        try:
+            result = subprocess.run(
+                ["uv", "run", "python", str(fetch_script.absolute())],
+                input="1\n",
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            if result.returncode == 0:
+                import shutil
+                src = Path(__file__).parent / "mark_six_history copy" / "history.csv"
+                dst = Path(__file__).parent / "history.csv"
+                if src.exists():
+                    shutil.copy(src, dst)
+                    logger.info("Startup: history.csv updated successfully")
+            else:
+                logger.warning("Startup fetch failed, using existing data")
+        except Exception as e:
+            logger.error(f"Startup fetch error: {e}")
     
     # Build application with JobQueue
     application = Application.builder().token(TOKEN).build()
@@ -209,16 +260,16 @@ def main() -> None:
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     application.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     
-    # Schedule automated updates - Daily at 21:30 HKT (9:30 PM)
+    # Schedule automated updates - Daily at 21:35 HKT (9:35 PM)
     job_queue = application.job_queue
     
     job_queue.run_daily(
         scheduled_marksix_update,
-        time=time(hour=21, minute=30, tzinfo=hk_tz),
+        time=time(hour=21, minute=35, tzinfo=hk_tz),
         name="marksix_daily_update"
     )
     
-    logger.info("Bot started with scheduled job (Daily at 21:30 HKT / 9:30 PM). Press Ctrl-C to stop.")
+    logger.info("Bot started with scheduled job (Daily at 21:35 HKT / 9:35 PM). Press Ctrl-C to stop.")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 

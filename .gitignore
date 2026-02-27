@@ -207,6 +207,23 @@ marimo/_lsp/
 __marimo__/
 
 # Project specific
-temp_images/
-charts/
+temp_images/*
+!temp_images/.gitkeep
+charts/*.png
+!charts/.gitkeep
 chart_output.png
+
+# Secrets and sensitive data
+.env
+.env.*
+!.env.sample
+*.key
+*.pem
+secrets/
+
+# Logs
+*.log
+logs/
+
+# macOS
+.DS_Store

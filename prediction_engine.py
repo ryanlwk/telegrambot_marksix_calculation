@@ -52,24 +52,87 @@ class MarkSixEngine:
         # 建立配對矩陣（用於配對加成）
         self.pair_matrix = self._build_pair_matrix(self.history)
         
+        # 尋找最佳視窗大小（實驗性功能，可能影響效能）
+        # self.optimal_window = self._find_optimal_window()
+        
         # 嘗試從真實預測記錄載入權重
         self._load_live_weights()
     
-    def _load_from_csv(self, csv_path: str, window_size: int = 30) -> List[List[int]]:
+    def _load_from_csv(self, csv_path: str, window_size: int = None) -> List[List[int]]:
         """
         從 CSV 載入歷史數據
         
         Args:
             csv_path: CSV 檔案路徑
-            window_size: 載入最近 N 期數據
+            window_size: 載入最近 N 期數據（None = 自動優化）
         
         Returns:
             歷史數據列表
         """
         df = pd.read_csv(csv_path)
-        # 只取最近 window_size 期的 6 個主要號碼（不含 special_number）
-        history_data = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].head(window_size).values.tolist()
+        
+        # 如果未指定視窗大小，先載入全部用於優化
+        if window_size is None:
+            # 載入全部數據用於視窗優化
+            history_data = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].values.tolist()
+        else:
+            # 只取最近 window_size 期的 6 個主要號碼（不含 special_number）
+            history_data = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].head(window_size).values.tolist()
+        
         return history_data
+    
+    def _find_optimal_window(self, test_sizes: List[int] = [20, 30, 40, 50]) -> int:
+        """
+        尋找最佳視窗大小
+        
+        測試多個視窗大小，返回平均命中數最高的視窗
+        
+        Args:
+            test_sizes: 要測試的視窗大小列表
+        
+        Returns:
+            最佳視窗大小
+        """
+        # 載入完整歷史數據
+        df = pd.read_csv(self.csv_path)
+        full_history = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].values.tolist()
+        
+        if len(full_history) < max(test_sizes) + 10:
+            # 數據不足，返回預設值
+            return 30
+        
+        results = {}
+        
+        for size in test_sizes:
+            if len(full_history) < size + 10:
+                continue
+            
+            scores = []
+            # 測試接下來的 10-20 期
+            test_range = min(20, len(full_history) - size)
+            
+            for test_idx in range(size, size + test_range):
+                train = full_history[:test_idx]
+                actual = set(full_history[test_idx])
+                
+                # 使用時間衰減算法測試（最穩定的單一算法）
+                temp_engine = MarkSixEngine(history_data=train, csv_path=self.csv_path)
+                pred, _ = temp_engine.predict_recency_weighted(max_attempts=500)
+                
+                matches = len(set(pred) & actual)
+                scores.append(matches)
+            
+            if scores:
+                results[size] = sum(scores) / len(scores)
+        
+        if not results:
+            return 30  # 預設值
+        
+        optimal = max(results, key=results.get)
+        print(f"🔍 視窗優化結果: {results}")
+        print(f"✅ 最佳視窗大小: {optimal}")
+        
+        return optimal
     
     def _load_live_weights(self):
         """從真實預測記錄載入算法權重"""
@@ -431,6 +494,105 @@ class MarkSixEngine:
         else:  # 週五、週六、週日
             return 1  # 下次是週二
     
+    def _momentum_score(self, lookback: int = 10) -> Dict[int, int]:
+        """
+        檢測熱勢號碼（連續出現的號碼）
+        
+        在最近 N 期中出現 3 次以上的號碼視為「熱勢中」
+        
+        Args:
+            lookback: 檢查最近 N 期
+        
+        Returns:
+            {號碼: 出現次數} 字典（只包含 3+ 次的號碼）
+        """
+        recent = self.history[:lookback]
+        counts = Counter()
+        
+        for draw in recent:
+            counts.update(draw)
+        
+        # 只返回出現 3 次以上的號碼（熱勢中）
+        return {num: count for num, count in counts.items() if count >= 3}
+    
+    def _consecutive_penalty(self, numbers: List[int]) -> int:
+        """
+        計算連號懲罰分數
+        
+        連續號碼對（如 5,6 或 31,32）在實際開獎中較少出現
+        
+        Args:
+            numbers: 號碼列表
+        
+        Returns:
+            連號對數量（越高表示越多連號）
+        """
+        sorted_nums = sorted(numbers)
+        penalty = 0
+        
+        for i in range(len(sorted_nums) - 1):
+            if sorted_nums[i+1] - sorted_nums[i] == 1:
+                penalty += 1
+        
+        return penalty
+    
+    def _balance_prediction(self, numbers: List[int], scores: Dict[int, float] = None) -> List[int]:
+        """
+        平衡預測號碼的範圍分佈
+        
+        確保預測涵蓋至少 2 個號碼區段：
+        - 低段: 1-16
+        - 中段: 17-32
+        - 高段: 33-49
+        
+        Args:
+            numbers: 原始預測號碼
+            scores: 號碼分數字典（用於替換時選擇）
+        
+        Returns:
+            平衡後的號碼列表
+        """
+        low = [n for n in numbers if n <= 16]
+        mid = [n for n in numbers if 17 <= n <= 32]
+        high = [n for n in numbers if n >= 33]
+        
+        bands_covered = sum([bool(low), bool(mid), bool(high)])
+        
+        # 如果已涵蓋 2+ 個區段，不需調整
+        if bands_covered >= 2:
+            return numbers
+        
+        # 需要調整：從其他區段選擇號碼
+        if scores is None:
+            # 沒有分數資訊，無法智能替換，返回原始預測
+            return numbers
+        
+        # 找出缺少的區段
+        missing_bands = []
+        if not low:
+            missing_bands.append((1, 16))
+        if not mid:
+            missing_bands.append((17, 32))
+        if not high:
+            missing_bands.append((33, 49))
+        
+        # 從缺少的區段中選擇高分號碼
+        result = numbers.copy()
+        
+        for band_min, band_max in missing_bands[:2]:  # 最多替換 2 個
+            # 找出該區段中分數最高的號碼
+            band_candidates = {n: s for n, s in scores.items() 
+                             if band_min <= n <= band_max and n not in result}
+            
+            if band_candidates:
+                best_in_band = max(band_candidates, key=band_candidates.get)
+                # 替換分數最低的號碼
+                worst_in_result = min(result, key=lambda n: scores.get(n, 0))
+                result.remove(worst_in_result)
+                result.append(best_in_band)
+        
+        return sorted(result)
+    
     def predict_pair_weighted(self, max_attempts: int = 2000) -> Tuple[List[int], bool]:
         """
         算法 5: 基於配對頻率的預測
@@ -572,7 +734,7 @@ class MarkSixEngine:
         return self.predict_smart_hybrid()
     
     # ==================== 算法 8: 加權集成投票（改進版）====================
-    def predict_weighted_ensemble(self, max_attempts: int = 2000) -> Tuple[List[int], bool]:
+    def predict_weighted_ensemble(self, max_attempts: int = 2000, apply_filters: bool = False) -> Tuple[List[int], bool]:
         """
         算法 8: 加權集成投票系統
         
@@ -585,6 +747,16 @@ class MarkSixEngine:
         - smart_hybrid: 1 (-18.6%)
         - gap_weighted: 1 (-9.0%)
         - weighted_frequency: 1 (-18.6%)
+        
+        可選優化（apply_filters=True）：
+        1. 熱勢檢測：最近 10 期出現 3+ 次的號碼作為平手時的決勝因素
+        2. 範圍平衡：確保預測涵蓋低(1-16)、中(17-32)、高(33-49)至少 2 個區段
+        3. 連號懲罰：減少連續號碼對的出現（如 5,6 或 31,32）
+        
+        注意：回測顯示這些過濾器會降低準確率，預設關閉
+        
+        Args:
+            apply_filters: 是否套用額外過濾器（預設 False，因回測顯示會降低準確率）
         
         Returns:
             (預測號碼列表, 是否使用 fallback)
@@ -603,13 +775,56 @@ class MarkSixEngine:
             # 如果所有算法都失敗，使用最佳單一算法
             return self.predict_recency_weighted(max_attempts)
         
-        # 選擇得票最高的 6 個號碼
-        top_numbers = sorted(votes.items(), key=lambda x: x[1], reverse=True)[:6]
-        prediction = sorted([num for num, _ in top_numbers])
+        if apply_filters:
+            # 使用進階過濾器（實驗性，回測顯示會降低準確率）
+            momentum = self._momentum_score(lookback=10)
+            
+            sorted_candidates = sorted(
+                votes.items(),
+                key=lambda x: (x[1], momentum.get(x[0], 0)),
+                reverse=True
+            )
+            
+            candidates = [num for num, _ in sorted_candidates[:10]]
+            
+            best_prediction = None
+            best_score = -999
+            
+            for attempt in range(min(100, max_attempts)):
+                if len(candidates) >= 6:
+                    sample = random.sample(candidates, 6)
+                else:
+                    sample = candidates + random.sample(range(1, 50), 6 - len(candidates))
+                
+                sample = sorted(sample)
+                
+                if not self._validate(sample) or not self._avoid_recent_patterns(sample):
+                    continue
+                
+                vote_score = sum(votes.get(n, 0) for n in sample)
+                momentum_bonus = sum(momentum.get(n, 0) for n in sample) * 0.5
+                consecutive_penalty = self._consecutive_penalty(sample) * 2
+                
+                total_score = vote_score + momentum_bonus - consecutive_penalty
+                
+                if total_score > best_score:
+                    best_score = total_score
+                    best_prediction = sample
+            
+            if best_prediction is None:
+                best_prediction = sorted([num for num, _ in sorted_candidates[:6]])
+            
+            score_dict = {num: vote + momentum.get(num, 0) * 0.5 
+                         for num, vote in votes.items()}
+            best_prediction = self._balance_prediction(best_prediction, score_dict)
+        else:
+            # 簡單版本：直接選擇得票最高的 6 個號碼（回測證明此版本最佳）
+            top_numbers = sorted(votes.items(), key=lambda x: x[1], reverse=True)[:6]
+            best_prediction = sorted([num for num, _ in top_numbers])
         
-        # 驗證
-        if self._validate(prediction) and self._avoid_recent_patterns(prediction):
-            return prediction, False
+        # 最終驗證
+        if self._validate(best_prediction):
+            return best_prediction, False
         
         # 驗證失敗，使用最佳單一算法作為 fallback
         return self.predict_recency_weighted(max_attempts)

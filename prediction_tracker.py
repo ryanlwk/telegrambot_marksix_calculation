@@ -36,7 +36,9 @@ class PredictionTracker:
                     'algorithm',
                     'predicted_numbers',
                     'actual_numbers',
+                    'special_number',  # 新增：特別號
                     'matches',
+                    'special_match',   # 新增：是否命中特別號
                     'user_id',
                     'status'  # pending, matched, expired
                 ])
@@ -72,7 +74,9 @@ class PredictionTracker:
                 algorithm,
                 ','.join(map(str, sorted(predicted_numbers))),
                 '',  # actual_numbers (待填入)
+                '',  # special_number (待填入)
                 '',  # matches (待計算)
+                '',  # special_match (待計算)
                 user_id or '',
                 'pending'
             ])
@@ -82,14 +86,16 @@ class PredictionTracker:
     def update_with_actual(
         self,
         draw_date: str,
-        actual_numbers: List[int]
+        actual_numbers: List[int],
+        special_number: int = None
     ) -> int:
         """
         更新指定日期的預測結果
         
         Args:
             draw_date: 開獎日期 (YYYY-MM-DD)
-            actual_numbers: 實際開獎號碼
+            actual_numbers: 實際開獎號碼（6 個主要號碼）
+            special_number: 特別號（可選）
         
         Returns:
             更新的記錄數量
@@ -109,9 +115,18 @@ class PredictionTracker:
             predicted = [int(x) for x in df.loc[idx, 'predicted_numbers'].split(',')]
             matches = len(set(predicted) & set(actual_numbers))
             
+            # 檢查是否命中特別號
+            special_match = False
+            if special_number is not None:
+                special_match = special_number in predicted
+            
             # 更新記錄
             df.loc[idx, 'actual_numbers'] = ','.join(map(str, sorted(actual_numbers)))
+            if special_number is not None:
+                df.loc[idx, 'special_number'] = special_number
             df.loc[idx, 'matches'] = matches
+            if special_number is not None:
+                df.loc[idx, 'special_match'] = special_match
             df.loc[idx, 'status'] = 'matched'
             
             updated_count += 1

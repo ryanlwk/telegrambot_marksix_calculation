@@ -226,6 +226,61 @@ class PredictionTracker:
         return expired_count
 
 
+# ==================== 真實權重計算 ====================
+def compute_live_weights(tracker_file: str = "live_predictions.csv") -> Optional[dict]:
+    """
+    從真實預測記錄計算算法權重
+    
+    只有當累積 30 筆以上已驗證的預測時才返回權重
+    否則返回 None（數據不足，應使用預設回測權重）
+    
+    Args:
+        tracker_file: 追蹤檔案路徑
+    
+    Returns:
+        權重字典 (1-5 scale)，如果數據不足則返回 None
+    """
+    from pathlib import Path
+    
+    if not Path(tracker_file).exists():
+        return None
+    
+    df = pd.read_csv(tracker_file)
+    
+    # 只統計已驗證的預測
+    matched = df[df['status'] == 'matched']
+    
+    if len(matched) < 30:
+        return None  # 數據不足，需要至少 30 筆
+    
+    # 計算每個算法的平均命中數
+    algo_performance = {}
+    for algo in matched['algorithm'].unique():
+        algo_data = matched[matched['algorithm'] == algo]
+        if len(algo_data) > 0:
+            avg_matches = algo_data['matches'].mean()
+            algo_performance[algo] = avg_matches
+    
+    if not algo_performance:
+        return None
+    
+    # 轉換為 1-5 權重（最差=1, 最好=5）
+    min_perf = min(algo_performance.values())
+    max_perf = max(algo_performance.values())
+    
+    if max_perf == min_perf:
+        # 所有算法表現相同，給予相同權重
+        return {algo: 3 for algo in algo_performance}
+    
+    weights = {}
+    for algo, perf in algo_performance.items():
+        # 線性縮放到 1-5 範圍
+        normalized = (perf - min_perf) / (max_perf - min_perf)
+        weights[algo] = max(1, min(5, int(1 + normalized * 4)))
+    
+    return weights
+
+
 # ==================== 便捷函數 ====================
 def track_prediction(
     predicted_numbers: List[int],

@@ -412,8 +412,8 @@ def predict_mark_six(ctx: RunContext) -> str:
         # 初始化預測引擎
         engine = MarkSixEngine()
         
-        # 使用時間衰減加權算法（28 期回測顯示表現最佳 +14.9%）
-        prediction, used_fallback = engine.generate_prediction(algorithm="recency_weighted")
+        # 使用加權集成算法（根據 28 期回測表現分配權重）
+        prediction, used_fallback = engine.generate_prediction(algorithm="weighted_ensemble")
         
         # 計算統計資訊
         total_sum = sum(prediction)
@@ -432,9 +432,9 @@ def predict_mark_six(ctx: RunContext) -> str:
         has_consecutive = any(sorted_pred[i+1] - sorted_pred[i] == 1 for i in range(5))
         result += f"   • 連號: {'有' if has_consecutive else '無'}\n\n"
         
-        result += f"📈 使用時間衰減加權算法（28 期回測準確率 +14.9%）\n"
-        result += f"🎯 最近開獎的號碼權重更高，捕捉短期趨勢\n"
-        result += f"📊 95% 信賴區間: [0.605, 1.109]\n"
+        result += f"📈 使用加權集成算法（根據 28 期回測表現分配權重）\n"
+        result += f"🎯 最佳算法權重更高：時間衰減(3) > 冷號(2) > 配對(2)\n"
+        result += f"🔬 包含配對共現加成 + 開獎日偏好分析\n"
         result += f"⚠️  <i>僅供參考，不保證中獎</i>"
         
         if used_fallback:

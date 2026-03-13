@@ -332,8 +332,23 @@ def main():
         window_size=30  # 從 50 降至 30，可獲得 28 個測試案例（而非 8 個）
     )
     
-    # 比較所有算法
-    comparison = backtest.compare_algorithms()
+    # 執行算法比較（包含新的加權集成）
+    print("\n" + "="*70)
+    print("🏆 算法比較測試（加權集成版）")
+    print("="*70 + "\n")
+    
+    algorithms = [
+        'weighted_ensemble',   # 新增：加權集成
+        'ensemble',            # 原始等權重集成
+        'recency_weighted',    # 最佳單一算法
+        'cold_number',
+        'pair_weighted',
+        'weighted_frequency',
+        'gap_weighted',
+        'smart_hybrid'
+    ]
+    
+    comparison = backtest.compare_algorithms(algorithms)
     
     # 與純隨機比較
     random_avg = backtest.compare_with_random(num_simulations=100)
@@ -341,8 +356,39 @@ def main():
     # 列印比較報告
     backtest.print_comparison_report(comparison, random_avg)
     
-    # 列印最佳算法的詳細報告
+    # 特別比較：加權集成 vs 原始集成 vs 最佳單一算法
+    print("\n" + "="*80)
+    print("🔍 關鍵比較：加權集成 vs 原始集成 vs 最佳單一算法")
+    print("="*80)
+    
+    key_algos = ['weighted_ensemble', 'ensemble', 'recency_weighted']
+    for algo in key_algos:
+        if algo in comparison:
+            stats = comparison[algo]
+            vs_random = ((stats['avg_matches'] / random_avg) - 1) * 100
+            
+            print(f"\n📊 {algo}:")
+            print(f"   平均命中: {stats['avg_matches']:.3f}/6")
+            print(f"   95% CI: [{stats['ci_95'][0]:.3f}, {stats['ci_95'][1]:.3f}]")
+            print(f"   標準差: {stats['std_dev']:.3f}")
+            print(f"   vs 隨機: {vs_random:+.1f}%")
+    
+    # 判斷最佳算法
     best_algo = max(comparison.items(), key=lambda x: x[1]['avg_matches'])[0]
+    
+    print("\n" + "="*80)
+    if best_algo == 'weighted_ensemble':
+        print("✅ 結論：加權集成表現最佳，建議使用")
+    elif best_algo == 'recency_weighted':
+        print("⚠️  結論：單一算法 recency_weighted 表現更好，建議改用")
+    else:
+        print(f"⚠️  結論：{best_algo} 表現最佳")
+    print("="*80)
+    
+    # 列印最佳算法的詳細報告
+    print(f"\n{'='*70}")
+    print(f"📈 詳細報告: {best_algo}")
+    print(f"{'='*70}\n")
     backtest.print_detailed_report(best_algo)
     
     # 儲存結果

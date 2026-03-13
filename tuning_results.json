@@ -1,0 +1,14 @@
+{
+  "optimal_decay_factor": 0.92,
+  "optimal_pair_boost": 0.05,
+  "optimal_day_weight": 0.2,
+  "tuned_avg_matches": 0.7142857142857143,
+  "default_avg_matches": 0.75,
+  "improvement_percent": -4.761904761904756,
+  "cross_validation_score": 0.9199999999999999,
+  "cross_validation_range": 0.3999999999999999,
+  "overfit_warning": false,
+  "tuned_on_draws": 58,
+  "test_cases": 28,
+  "tuned_at": "2026-03-13T15:32:59.063636"
+}

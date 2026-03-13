@@ -6,9 +6,11 @@ Mark Six 預測引擎
 
 import random
 import pandas as pd
+import json
 from pathlib import Path
 from collections import Counter, defaultdict
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Optional
+from datetime import datetime
 
 
 class MarkSixEngine:
@@ -52,8 +54,8 @@ class MarkSixEngine:
         # 建立配對矩陣（用於配對加成）
         self.pair_matrix = self._build_pair_matrix(self.history)
         
-        # 尋找最佳視窗大小（實驗性功能，可能影響效能）
-        # self.optimal_window = self._find_optimal_window()
+        # 載入或計算最佳參數
+        self._load_tuned_parameters()
         
         # 嘗試從真實預測記錄載入權重
         self._load_live_weights()
@@ -133,6 +135,31 @@ class MarkSixEngine:
         print(f"✅ 最佳視窗大小: {optimal}")
         
         return optimal
+    
+    def _load_tuned_parameters(self):
+        """載入或計算最佳參數"""
+        tuning_file = Path(__file__).parent / "tuning_results.json"
+        
+        # 預設參數（經過多次回測驗證）
+        self.optimal_decay_factor = 0.95
+        self.optimal_pair_boost = 0.20
+        self.optimal_day_weight = 0.10
+        
+        if tuning_file.exists():
+            try:
+                with open(tuning_file, 'r') as f:
+                    tuned = json.load(f)
+                
+                # 只有當調校結果建議使用且改進 > 5% 時才套用
+                if tuned.get('recommendation') == 'use_tuned' and tuned.get('improvement_percent', 0) > 5:
+                    self.optimal_decay_factor = tuned.get('optimal_decay_factor', 0.95)
+                    self.optimal_pair_boost = tuned.get('optimal_pair_boost', 0.20)
+                    self.optimal_day_weight = tuned.get('optimal_day_weight', 0.10)
+                    print(f"✅ 載入調校參數: decay={self.optimal_decay_factor}, pair={self.optimal_pair_boost}, day={self.optimal_day_weight}")
+                else:
+                    print(f"ℹ️  調校結果未達標準，使用預設參數（decay=0.95, pair=0.20, day=0.10）")
+            except Exception as e:
+                print(f"⚠️  無法載入調校參數: {e}")
     
     def _load_live_weights(self):
         """從真實預測記錄載入算法權重"""
@@ -245,18 +272,367 @@ class MarkSixEngine:
         # Fallback: 純隨機
         return sorted(random.sample(population, 6)), True
     
-    # ==================== 算法 2: 時間衰減加權（改進版）====================
-    def predict_recency_weighted(self, decay_factor: float = 0.95, max_attempts: int = 2000) -> Tuple[List[int], bool]:
+    # ==================== 參數調校方法 ====================
+    def tune_decay_factor(self, test_factors: List[float] = [0.85, 0.90, 0.92, 0.95, 0.97, 0.99]) -> float:
         """
-        算法 2: 時間衰減加權 + 配對共現加成 + 開獎日偏好
+        調校衰減係數
         
-        最近的開獎結果權重更高，隨時間遞減
-        額外考慮：
-        1. 配對共現：與最近號碼經常一起出現的號碼加成（最多 +20%）
-        2. 開獎日偏好：特定星期的號碼頻率加成（最多 +10%）
+        測試多個衰減係數，返回平均命中數最高的係數
         
         Args:
-            decay_factor: 衰減係數 (0.9=快速衰減, 0.99=慢速衰減)
+            test_factors: 要測試的衰減係數列表
+        
+        Returns:
+            最佳衰減係數
+        """
+        df = pd.read_csv(self.csv_path)
+        full_history = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].values.tolist()
+        
+        if len(full_history) < 40:
+            return 0.95  # 數據不足，返回預設值
+        
+        print("\n🔧 調校衰減係數...")
+        results = {}
+        
+        for factor in test_factors:
+            scores = []
+            for test_idx in range(30, min(len(full_history), 58)):
+                train = full_history[:test_idx]
+                actual = set(full_history[test_idx])
+                
+                # 使用此衰減係數預測
+                temp_engine = MarkSixEngine(history_data=train, csv_path=self.csv_path)
+                temp_engine.optimal_decay_factor = factor
+                pred, _ = temp_engine.predict_recency_weighted(decay_factor=factor, max_attempts=500)
+                
+                matches = len(set(pred) & actual)
+                scores.append(matches)
+            
+            if scores:
+                results[factor] = sum(scores) / len(scores)
+                print(f"  decay={factor}: {results[factor]:.3f}/6")
+        
+        optimal = max(results, key=results.get) if results else 0.95
+        print(f"✅ 最佳衰減係數: {optimal} ({results.get(optimal, 0):.3f}/6)\n")
+        
+        return optimal
+    
+    def tune_pair_boost(self, test_boosts: List[float] = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30]) -> float:
+        """
+        調校配對加成權重
+        
+        測試多個加成值，返回平均命中數最高的加成
+        
+        Args:
+            test_boosts: 要測試的加成值列表
+        
+        Returns:
+            最佳配對加成值
+        """
+        df = pd.read_csv(self.csv_path)
+        full_history = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].values.tolist()
+        
+        if len(full_history) < 40:
+            return 0.20  # 數據不足
+        
+        print("\n🔧 調校配對加成...")
+        results = {}
+        
+        for boost in test_boosts:
+            scores = []
+            for test_idx in range(30, min(len(full_history), 58)):
+                train = full_history[:test_idx]
+                actual = set(full_history[test_idx])
+                
+                temp_engine = MarkSixEngine(history_data=train, csv_path=self.csv_path)
+                temp_engine.optimal_pair_boost = boost
+                pred, _ = temp_engine._predict_recency_with_params(
+                    decay_factor=self.optimal_decay_factor,
+                    pair_boost=boost,
+                    day_weight=self.optimal_day_weight,
+                    max_attempts=500
+                )
+                
+                matches = len(set(pred) & actual)
+                scores.append(matches)
+            
+            if scores:
+                results[boost] = sum(scores) / len(scores)
+                print(f"  pair_boost={boost}: {results[boost]:.3f}/6")
+        
+        optimal = max(results, key=results.get) if results else 0.20
+        print(f"✅ 最佳配對加成: {optimal} ({results.get(optimal, 0):.3f}/6)\n")
+        
+        return optimal
+    
+    def tune_day_weight(self, test_weights: List[float] = [0.0, 0.05, 0.10, 0.15, 0.20]) -> float:
+        """
+        調校開獎日權重
+        
+        測試多個權重值，返回平均命中數最高的權重
+        0.0 = 完全停用開獎日加成
+        
+        Args:
+            test_weights: 要測試的權重值列表
+        
+        Returns:
+            最佳開獎日權重
+        """
+        df = pd.read_csv(self.csv_path)
+        full_history = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].values.tolist()
+        
+        if len(full_history) < 40:
+            return 0.10  # 數據不足
+        
+        print("\n🔧 調校開獎日權重...")
+        results = {}
+        
+        for weight in test_weights:
+            scores = []
+            for test_idx in range(30, min(len(full_history), 58)):
+                train = full_history[:test_idx]
+                actual = set(full_history[test_idx])
+                
+                temp_engine = MarkSixEngine(history_data=train, csv_path=self.csv_path)
+                temp_engine.optimal_day_weight = weight
+                pred, _ = temp_engine._predict_recency_with_params(
+                    decay_factor=self.optimal_decay_factor,
+                    pair_boost=self.optimal_pair_boost,
+                    day_weight=weight,
+                    max_attempts=500
+                )
+                
+                matches = len(set(pred) & actual)
+                scores.append(matches)
+            
+            if scores:
+                results[weight] = sum(scores) / len(scores)
+                print(f"  day_weight={weight}: {results[weight]:.3f}/6")
+        
+        optimal = max(results, key=results.get) if results else 0.10
+        print(f"✅ 最佳開獎日權重: {optimal} ({results.get(optimal, 0):.3f}/6)")
+        
+        if optimal == 0.0:
+            print(f"⚠️  開獎日權重為 0.0，表示此特徵增加雜訊，已停用\n")
+        else:
+            print()
+        
+        return optimal
+    
+    def cross_validate_params(
+        self, 
+        decay_factor: float,
+        pair_boost: float,
+        day_weight: float,
+        k: int = 5
+    ) -> Tuple[float, float]:
+        """
+        交叉驗證調校參數（防止過度擬合）
+        
+        將數據分成 k 份，在不同的驗證集上測試參數
+        
+        Args:
+            decay_factor: 衰減係數
+            pair_boost: 配對加成
+            day_weight: 開獎日權重
+            k: 交叉驗證折數
+        
+        Returns:
+            (交叉驗證平均分數, 分數範圍)
+        """
+        df = pd.read_csv(self.csv_path)
+        full_history = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].values.tolist()
+        
+        if len(full_history) < 40:
+            return 0.0, 0.0
+        
+        test_range = len(full_history) - 30
+        fold_size = test_range // k
+        
+        fold_scores = []
+        
+        for i in range(k):
+            val_start = 30 + (i * fold_size)
+            val_end = min(val_start + fold_size, len(full_history))
+            
+            fold_score = []
+            for test_idx in range(val_start, val_end):
+                train = full_history[:test_idx]
+                actual = set(full_history[test_idx])
+                
+                temp_engine = MarkSixEngine(history_data=train, csv_path=self.csv_path)
+                pred, _ = temp_engine._predict_recency_with_params(
+                    decay_factor=decay_factor,
+                    pair_boost=pair_boost,
+                    day_weight=day_weight,
+                    max_attempts=500
+                )
+                
+                matches = len(set(pred) & actual)
+                fold_score.append(matches)
+            
+            if fold_score:
+                fold_avg = sum(fold_score) / len(fold_score)
+                fold_scores.append(fold_avg)
+        
+        if not fold_scores:
+            return 0.0, 0.0
+        
+        cv_mean = sum(fold_scores) / len(fold_scores)
+        cv_range = max(fold_scores) - min(fold_scores)
+        
+        return cv_mean, cv_range
+    
+    def tune_all(self, save_results: bool = True) -> Dict:
+        """
+        執行完整參數調校
+        
+        依序調校所有參數並儲存結果
+        
+        Args:
+            save_results: 是否儲存結果到 JSON
+        
+        Returns:
+            調校結果字典
+        """
+        print("\n" + "="*70)
+        print("🎯 Mark Six 預測引擎參數調校系統")
+        print("="*70)
+        
+        # 載入完整歷史數據
+        df = pd.read_csv(self.csv_path)
+        full_history = df[['n1', 'n2', 'n3', 'n4', 'n5', 'n6']].values.tolist()
+        test_cases = len(full_history) - 30
+        
+        print(f"\n📊 數據集: {len(full_history)} 期歷史數據")
+        print(f"📊 測試案例: {test_cases} 期（第 31-{len(full_history)} 期）\n")
+        
+        # 1. 調校衰減係數（最重要）
+        optimal_decay = self.tune_decay_factor()
+        
+        # 2. 調校配對加成
+        self.optimal_decay_factor = optimal_decay
+        optimal_pair = self.tune_pair_boost()
+        
+        # 3. 調校開獎日權重
+        self.optimal_pair_boost = optimal_pair
+        optimal_day = self.tune_day_weight()
+        
+        # 4. 交叉驗證
+        print("\n🔍 執行交叉驗證（防止過度擬合）...")
+        cv_mean, cv_range = self.cross_validate_params(
+            decay_factor=optimal_decay,
+            pair_boost=optimal_pair,
+            day_weight=optimal_day,
+            k=5
+        )
+        
+        print(f"   交叉驗證分數: {cv_mean:.3f}/6 (範圍: ±{cv_range:.3f})")
+        
+        # 5. 比較調校前後
+        print("\n📊 調校前後比較:")
+        
+        # 預設參數
+        default_scores = []
+        for test_idx in range(30, min(len(full_history), 58)):
+            train = full_history[:test_idx]
+            actual = set(full_history[test_idx])
+            
+            temp_engine = MarkSixEngine(history_data=train, csv_path=self.csv_path)
+            pred, _ = temp_engine._predict_recency_with_params(
+                decay_factor=0.95,
+                pair_boost=0.20,
+                day_weight=0.10,
+                max_attempts=500
+            )
+            
+            matches = len(set(pred) & actual)
+            default_scores.append(matches)
+        
+        default_avg = sum(default_scores) / len(default_scores) if default_scores else 0
+        
+        # 調校參數
+        tuned_scores = []
+        for test_idx in range(30, min(len(full_history), 58)):
+            train = full_history[:test_idx]
+            actual = set(full_history[test_idx])
+            
+            temp_engine = MarkSixEngine(history_data=train, csv_path=self.csv_path)
+            pred, _ = temp_engine._predict_recency_with_params(
+                decay_factor=optimal_decay,
+                pair_boost=optimal_pair,
+                day_weight=optimal_day,
+                max_attempts=500
+            )
+            
+            matches = len(set(pred) & actual)
+            tuned_scores.append(matches)
+        
+        tuned_avg = sum(tuned_scores) / len(tuned_scores) if tuned_scores else 0
+        
+        print(f"   預設參數 (0.95, 0.20, 0.10): {default_avg:.3f}/6")
+        print(f"   調校參數 ({optimal_decay}, {optimal_pair}, {optimal_day}): {tuned_avg:.3f}/6")
+        
+        improvement = ((tuned_avg / default_avg) - 1) * 100 if default_avg > 0 else 0
+        print(f"   改進幅度: {improvement:+.1f}%")
+        
+        # 檢查過度擬合
+        overfit_warning = False
+        if cv_mean < tuned_avg - 0.1:
+            print(f"\n⚠️  警告：交叉驗證分數 ({cv_mean:.3f}) 明顯低於回測分數 ({tuned_avg:.3f})")
+            print(f"⚠️  可能存在過度擬合，建議保留預設參數")
+            overfit_warning = True
+        
+        # 準備結果
+        results = {
+            'optimal_decay_factor': optimal_decay,
+            'optimal_pair_boost': optimal_pair,
+            'optimal_day_weight': optimal_day,
+            'tuned_avg_matches': tuned_avg,
+            'default_avg_matches': default_avg,
+            'improvement_percent': improvement,
+            'cross_validation_score': cv_mean,
+            'cross_validation_range': cv_range,
+            'overfit_warning': overfit_warning,
+            'tuned_on_draws': len(full_history),
+            'test_cases': test_cases,
+            'tuned_at': datetime.now().isoformat()
+        }
+        
+        # 儲存結果
+        if save_results:
+            output_file = Path(__file__).parent / "tuning_results.json"
+            with open(output_file, 'w', encoding='utf-8') as f:
+                json.dump(results, f, indent=2, ensure_ascii=False)
+            print(f"\n💾 調校結果已儲存至: tuning_results.json")
+        
+        # 決定是否使用調校參數
+        if overfit_warning or improvement < 0:
+            print(f"\n⚠️  建議：保留預設參數（decay=0.95, pair=0.20, day=0.10）")
+            results['recommendation'] = 'use_defaults'
+        else:
+            print(f"\n✅ 建議：使用調校參數（decay={optimal_decay}, pair={optimal_pair}, day={optimal_day}）")
+            results['recommendation'] = 'use_tuned'
+        
+        print("="*70 + "\n")
+        
+        return results
+    
+    def _predict_recency_with_params(
+        self,
+        decay_factor: float = 0.95,
+        pair_boost: float = 0.20,
+        day_weight: float = 0.10,
+        max_attempts: int = 2000
+    ) -> Tuple[List[int], bool]:
+        """
+        使用指定參數的時間衰減加權預測（內部方法，用於調校）
+        
+        Args:
+            decay_factor: 衰減係數
+            pair_boost: 配對加成（0-1 範圍，表示最大加成比例）
+            day_weight: 開獎日權重（0-1 範圍）
+            max_attempts: 最大嘗試次數
         
         Returns:
             (預測號碼列表, 是否使用 fallback)
@@ -269,41 +645,44 @@ class MarkSixEngine:
             for num in draw:
                 weights_dict[num] = weights_dict.get(num, 0) + weight
         
-        # 2. 配對共現加成（最多 +20%）
-        recent_numbers = set()
-        for draw in self.history[:5]:  # 最近 5 期
-            recent_numbers.update(draw)
+        # 2. 配對共現加成
+        if pair_boost > 0:
+            recent_numbers = set()
+            for draw in self.history[:5]:
+                recent_numbers.update(draw)
+            
+            pair_boost_dict = {}
+            for num in range(1, 50):
+                boost = 0
+                for recent_num in recent_numbers:
+                    pair_key = tuple(sorted([num, recent_num]))
+                    if pair_key in self.pair_matrix:
+                        boost += self.pair_matrix[pair_key]
+                pair_boost_dict[num] = boost
+            
+            max_boost = max(pair_boost_dict.values()) if pair_boost_dict else 1
+            if max_boost > 0:
+                for num in pair_boost_dict:
+                    pair_boost_dict[num] = (pair_boost_dict[num] / max_boost) * pair_boost
+            
+            for num in weights_dict:
+                weights_dict[num] = weights_dict[num] * (1 + pair_boost_dict.get(num, 0))
         
-        pair_boost = {}
-        for num in range(1, 50):
-            boost = 0
-            for recent_num in recent_numbers:
-                pair_key = tuple(sorted([num, recent_num]))
-                if pair_key in self.pair_matrix:
-                    boost += self.pair_matrix[pair_key]
-            pair_boost[num] = boost
-        
-        # 正規化配對加成到 0-0.2 範圍
-        max_boost = max(pair_boost.values()) if pair_boost else 1
-        if max_boost > 0:
-            for num in pair_boost:
-                pair_boost[num] = (pair_boost[num] / max_boost) * 0.2
-        
-        # 3. 開獎日偏好加成（最多 +10%）
-        next_weekday = self._get_next_draw_weekday()
-        day_freq = self._get_draw_day_frequency(next_weekday)
-        
-        day_boost = {}
-        max_day_freq = max(day_freq.values()) if day_freq else 1
-        for num in range(1, 50):
-            if num in day_freq and max_day_freq > 0:
-                day_boost[num] = (day_freq[num] / max_day_freq) * 0.1
-            else:
-                day_boost[num] = 0
-        
-        # 4. 組合所有權重：基礎 × (1 + 配對加成 + 開獎日加成)
-        for num in weights_dict:
-            weights_dict[num] = weights_dict[num] * (1 + pair_boost.get(num, 0) + day_boost.get(num, 0))
+        # 3. 開獎日偏好加成
+        if day_weight > 0:
+            next_weekday = self._get_next_draw_weekday()
+            day_freq = self._get_draw_day_frequency(next_weekday)
+            
+            day_boost_dict = {}
+            max_day_freq = max(day_freq.values()) if day_freq else 1
+            for num in range(1, 50):
+                if num in day_freq and max_day_freq > 0:
+                    day_boost_dict[num] = (day_freq[num] / max_day_freq) * day_weight
+                else:
+                    day_boost_dict[num] = 0
+            
+            for num in weights_dict:
+                weights_dict[num] = weights_dict[num] * (1 + day_boost_dict.get(num, 0))
         
         population = list(range(1, 50))
         weights = [weights_dict.get(i, 0.1) for i in population]
@@ -318,6 +697,33 @@ class MarkSixEngine:
                     return sorted(final_selection), False
         
         return sorted(random.sample(population, 6)), True
+    
+    # ==================== 算法 2: 時間衰減加權（改進版）====================
+    def predict_recency_weighted(self, decay_factor: float = None, max_attempts: int = 2000) -> Tuple[List[int], bool]:
+        """
+        算法 2: 時間衰減加權 + 配對共現加成 + 開獎日偏好
+        
+        最近的開獎結果權重更高，隨時間遞減
+        額外考慮：
+        1. 配對共現：與最近號碼經常一起出現的號碼加成（可調校）
+        2. 開獎日偏好：特定星期的號碼頻率加成（可調校）
+        
+        Args:
+            decay_factor: 衰減係數（None = 使用調校值）
+        
+        Returns:
+            (預測號碼列表, 是否使用 fallback)
+        """
+        # 使用調校參數或預設值
+        if decay_factor is None:
+            decay_factor = self.optimal_decay_factor
+        
+        return self._predict_recency_with_params(
+            decay_factor=decay_factor,
+            pair_boost=self.optimal_pair_boost,
+            day_weight=self.optimal_day_weight,
+            max_attempts=max_attempts
+        )
     
     # ==================== 算法 3: 冷號回歸 ====================
     def predict_cold_number_boost(self, boost_factor: float = 1.5, max_attempts: int = 2000) -> Tuple[List[int], bool]:

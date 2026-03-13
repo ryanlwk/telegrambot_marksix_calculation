@@ -148,6 +148,61 @@ async def hot_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
         await update.message.reply_text("❌ 無法取得熱門號碼")
 
 
+async def tune_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """執行參數調校（僅限管理員）"""
+    # 檢查是否為管理員
+    admin_user_id = int(os.getenv('TARGET_CHAT_ID', '0'))
+    
+    if update.effective_user.id != admin_user_id:
+        await update.message.reply_text("❌ 此指令僅限管理員使用")
+        return
+    
+    try:
+        await update.message.reply_text("🔧 開始參數調校，這可能需要 1-2 分鐘...")
+        await update.message.chat.send_action("typing")
+        
+        from prediction_engine import MarkSixEngine
+        
+        # 執行調校
+        engine = MarkSixEngine()
+        results = engine.tune_all(save_results=True)
+        
+        # 格式化結果
+        response = "🔧 <b>參數調校完成</b>\n\n"
+        
+        response += "📊 <b>最佳參數:</b>\n"
+        response += f"   • 衰減係數: <code>{results['optimal_decay_factor']}</code> (預設 0.95)\n"
+        response += f"   • 配對加成: <code>{results['optimal_pair_boost']}</code> (預設 0.20)\n"
+        response += f"   • 開獎日權重: <code>{results['optimal_day_weight']}</code> (預設 0.10)\n\n"
+        
+        response += f"📈 <b>效能:</b>\n"
+        response += f"   • 預設參數: {results['default_avg_matches']:.3f}/6\n"
+        response += f"   • 調校參數: {results['tuned_avg_matches']:.3f}/6\n"
+        response += f"   • 改進幅度: {results['improvement_percent']:+.1f}%\n\n"
+        
+        response += f"🔍 <b>交叉驗證:</b>\n"
+        response += f"   • CV 分數: {results['cross_validation_score']:.3f}/6\n"
+        response += f"   • CV 範圍: ±{results['cross_validation_range']:.3f}\n\n"
+        
+        if results['overfit_warning']:
+            response += "⚠️  <b>警告：</b>檢測到過度擬合，建議保留預設參數\n\n"
+        
+        response += f"📊 調校數據: {results['tuned_on_draws']} 期 ({results['test_cases']} 個測試案例)\n"
+        
+        if results.get('recommendation') == 'use_tuned':
+            response += "\n✅ 建議使用調校參數（已自動套用）"
+        else:
+            response += "\n⚠️  建議保留預設參數"
+        
+        response += f"\n\n💡 下次自動調校：累積 50 筆真實預測後"
+        
+        await update.message.reply_html(response)
+        
+    except Exception as e:
+        logger.error(f"Error in tuning: {e}", exc_info=True)
+        await update.message.reply_text("❌ 參數調校失敗，請稍後再試")
+
+
 async def scheduled_marksix_update(context: ContextTypes.DEFAULT_TYPE) -> None:
     """Scheduled job to update Mark Six data and send trend chart."""
     try:
@@ -319,6 +374,7 @@ def main() -> None:
     application.add_handler(CommandHandler("stats", stats_command))
     application.add_handler(CommandHandler("predict", predict_command))
     application.add_handler(CommandHandler("hot", hot_command))
+    application.add_handler(CommandHandler("tune", tune_command))
     
     # Add message handlers
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))

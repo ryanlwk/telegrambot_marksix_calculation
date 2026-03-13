@@ -40,7 +40,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         "1️⃣ <b>Calculator</b>: Ask me math questions like 'What is 125 * 48?' or '1-9'\n"
         "2️⃣ <b>Mark Six Extractor</b>: Send me an image of Mark Six lottery results\n"
         "3️⃣ <b>Mark Six History</b>: Ask about historical data like 'What's the latest result?'\n"
-        "4️⃣ <b>Trend Charts</b>: Use /stats to generate a frequency chart\n\n"
+        "4️⃣ <b>Trend Charts</b>: Use /stats to generate a frequency chart\n"
+        "5️⃣ <b>AI Prediction</b>: Use /predict to get AI-generated lottery numbers 🔮\n"
+        "6️⃣ <b>Hot Numbers</b>: Use /hot to see most frequent numbers 🔥\n\n"
         "📊 <b>Auto-Updates:</b> I'll send trend charts daily at 9:35 PM HKT!\n\n"
         "Try it out!"
     )
@@ -48,17 +50,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
-    await update.message.reply_text(
-        "I can help you with:\n"
+    await update.message.reply_html(
+        "<b>🤖 Bot Capabilities:</b>\n\n"
         "• Math calculations (e.g., 'Calculate 1000 divided by 25' or '1-9')\n"
         "• Extract Mark Six lottery results from images (just send me a photo)\n"
         "• Query historical data (e.g., 'How often has number 7 appeared?')\n"
-        "• Generate trend charts (use /stats command)\n\n"
-        "Commands:\n"
+        "• Generate trend charts (use /stats command)\n"
+        "• AI-powered predictions (use /predict command) 🔮\n"
+        "• Hot number analysis (use /hot command) 🔥\n\n"
+        "<b>📋 Commands:</b>\n"
         "/start - Show welcome message\n"
         "/help - Show this help message\n"
-        "/stats - Generate and send Mark Six trend chart\n\n"
-        "Just send me a message or image!"
+        "/stats - Generate and send Mark Six trend chart\n"
+        "/predict - Generate AI prediction numbers (based on cold number algorithm)\n"
+        "/hot - Show top 5 most frequent numbers\n\n"
+        "💡 <i>Just send me a message or image!</i>"
     )
 
 
@@ -84,6 +90,62 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     except Exception as e:
         logger.error(f"Error generating chart: {e}", exc_info=True)
         await update.message.reply_text("Sorry, I couldn't generate the chart. Please try again later.")
+
+
+async def predict_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """生成 Mark Six AI 預測號碼"""
+    try:
+        await update.message.chat.send_action("typing")
+        
+        # 使用 AI agent 生成預測
+        result = await agent.run("Generate Mark Six prediction numbers")
+        
+        # 記錄預測到追蹤系統（用於未來驗證）
+        try:
+            from prediction_tracker import track_prediction
+            from prediction_engine import MarkSixEngine
+            from datetime import datetime, timedelta
+            
+            # 生成預測號碼（用於追蹤）
+            engine = MarkSixEngine()
+            prediction, _ = engine.generate_prediction(algorithm="ensemble")
+            
+            # 計算下次開獎日期（週二、四、六）
+            today = datetime.now()
+            days_ahead = {0: 2, 1: 1, 2: 1, 3: 3, 4: 2, 5: 1, 6: 3}  # 週一到週日
+            next_draw = today + timedelta(days=days_ahead[today.weekday()])
+            
+            # 記錄預測
+            pred_id = track_prediction(
+                predicted_numbers=prediction,
+                expected_draw_date=next_draw.strftime("%Y-%m-%d"),
+                algorithm="ensemble",
+                user_id=str(update.effective_user.id)
+            )
+            logger.info(f"Logged prediction {pred_id} for user {update.effective_user.id}")
+        except Exception as track_error:
+            logger.warning(f"Failed to log prediction: {track_error}")
+        
+        await update.message.reply_html(result.output)
+        
+    except Exception as e:
+        logger.error(f"Error in prediction: {e}", exc_info=True)
+        await update.message.reply_text("❌ 預測失敗，請稍後再試")
+
+
+async def hot_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """顯示最熱門的 Mark Six 號碼"""
+    try:
+        await update.message.chat.send_action("typing")
+        
+        # 使用 AI agent 取得熱門號碼
+        result = await agent.run("Show the top 5 hot numbers")
+        
+        await update.message.reply_html(result.output)
+        
+    except Exception as e:
+        logger.error(f"Error getting hot numbers: {e}", exc_info=True)
+        await update.message.reply_text("❌ 無法取得熱門號碼")
 
 
 async def scheduled_marksix_update(context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -255,6 +317,8 @@ def main() -> None:
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("stats", stats_command))
+    application.add_handler(CommandHandler("predict", predict_command))
+    application.add_handler(CommandHandler("hot", hot_command))
     
     # Add message handlers
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))

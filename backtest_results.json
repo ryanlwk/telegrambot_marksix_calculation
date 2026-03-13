@@ -1,0 +1,2468 @@
+{
+  "weighted_frequency": {
+    "stats": {
+      "algorithm": "weighted_frequency",
+      "total_predictions": 28,
+      "average_matches": 0.6071428571428571,
+      "confidence_interval_95": [
+        0.3632847685203946,
+        0.8510009457653196
+      ],
+      "std_deviation": 0.6288900106557946,
+      "match_distribution": {
+        "0": 13,
+        "1": 13,
+        "2": 2
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 35,
+          "date": "2025-12-11",
+          "predicted": [
+            4,
+            5,
+            12,
+            22,
+            25,
+            49
+          ],
+          "actual": [
+            1,
+            5,
+            6,
+            25,
+            30,
+            42
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 40,
+          "date": "2025-11-18",
+          "predicted": [
+            4,
+            6,
+            8,
+            10,
+            27,
+            39
+          ],
+          "actual": [
+            2,
+            4,
+            10,
+            26,
+            28,
+            36
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 32,
+          "date": "2025-12-18",
+          "predicted": [
+            13,
+            23,
+            24,
+            35,
+            47,
+            48
+          ],
+          "actual": [
+            6,
+            23,
+            28,
+            31,
+            33,
+            34
+          ],
+          "matches": 1,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 33,
+          "date": "2025-12-16",
+          "predicted": [
+            9,
+            23,
+            27,
+            30,
+            34,
+            36
+          ],
+          "actual": [
+            3,
+            12,
+            23,
+            28,
+            35,
+            38
+          ],
+          "matches": 1,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 34,
+          "date": "2025-12-13",
+          "predicted": [
+            4,
+            6,
+            15,
+            28,
+            34,
+            35
+          ],
+          "actual": [
+            10,
+            17,
+            19,
+            28,
+            45,
+            49
+          ],
+          "matches": 1,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          22,
+          32,
+          35,
+          37,
+          43,
+          45
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          13,
+          23,
+          24,
+          35,
+          47,
+          48
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          9,
+          23,
+          27,
+          30,
+          34,
+          36
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          4,
+          6,
+          15,
+          28,
+          34,
+          35
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          4,
+          5,
+          12,
+          22,
+          25,
+          49
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          2,
+          22,
+          24,
+          33,
+          37,
+          40
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          14,
+          18,
+          23,
+          32,
+          36,
+          47
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          1,
+          10,
+          12,
+          23,
+          25,
+          33
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          7,
+          23,
+          27,
+          28,
+          34,
+          37
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          4,
+          6,
+          8,
+          10,
+          27,
+          39
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 2,
+        "used_fallback": false
+      }
+    ]
+  },
+  "recency_weighted": {
+    "stats": {
+      "algorithm": "recency_weighted",
+      "total_predictions": 28,
+      "average_matches": 0.8571428571428571,
+      "confidence_interval_95": [
+        0.6048664946168791,
+        1.109419219668835
+      ],
+      "std_deviation": 0.6506000486323555,
+      "match_distribution": {
+        "0": 8,
+        "1": 16,
+        "2": 4
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 37,
+          "date": "2025-12-02",
+          "predicted": [
+            6,
+            10,
+            12,
+            23,
+            25,
+            37
+          ],
+          "actual": [
+            6,
+            18,
+            29,
+            34,
+            37,
+            38
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 44,
+          "date": "2025-11-08",
+          "predicted": [
+            10,
+            11,
+            19,
+            31,
+            33,
+            46
+          ],
+          "actual": [
+            7,
+            9,
+            16,
+            17,
+            33,
+            46
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 46,
+          "date": "2025-11-04",
+          "predicted": [
+            4,
+            6,
+            19,
+            23,
+            28,
+            41
+          ],
+          "actual": [
+            19,
+            20,
+            26,
+            28,
+            39,
+            44
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 56,
+          "date": "2025-10-06",
+          "predicted": [
+            11,
+            17,
+            30,
+            34,
+            37,
+            42
+          ],
+          "actual": [
+            15,
+            17,
+            19,
+            23,
+            24,
+            34
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 32,
+          "date": "2025-12-18",
+          "predicted": [
+            4,
+            22,
+            23,
+            35,
+            36,
+            39
+          ],
+          "actual": [
+            6,
+            23,
+            28,
+            31,
+            33,
+            34
+          ],
+          "matches": 1,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          2,
+          4,
+          8,
+          14,
+          37,
+          43
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          4,
+          22,
+          23,
+          35,
+          36,
+          39
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          2,
+          20,
+          27,
+          30,
+          37,
+          49
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          4,
+          11,
+          18,
+          37,
+          47,
+          49
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          9,
+          12,
+          28,
+          34,
+          38,
+          39
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          3,
+          12,
+          26,
+          37,
+          39,
+          46
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          6,
+          10,
+          12,
+          23,
+          25,
+          37
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          3,
+          6,
+          30,
+          38,
+          41,
+          48
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          7,
+          13,
+          18,
+          23,
+          28,
+          34
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          4,
+          6,
+          7,
+          9,
+          19,
+          49
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 1,
+        "used_fallback": false
+      }
+    ]
+  },
+  "cold_number": {
+    "stats": {
+      "algorithm": "cold_number",
+      "total_predictions": 28,
+      "average_matches": 0.7857142857142857,
+      "confidence_interval_95": [
+        0.4806267269411398,
+        1.0908018444874317
+      ],
+      "std_deviation": 0.7867957924694432,
+      "match_distribution": {
+        "1": 13,
+        "0": 11,
+        "3": 1,
+        "2": 3
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 41,
+          "date": "2025-11-16",
+          "predicted": [
+            2,
+            11,
+            13,
+            35,
+            44,
+            46
+          ],
+          "actual": [
+            2,
+            11,
+            13,
+            28,
+            38,
+            47
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 44,
+          "date": "2025-11-08",
+          "predicted": [
+            7,
+            8,
+            14,
+            16,
+            23,
+            26
+          ],
+          "actual": [
+            7,
+            9,
+            16,
+            17,
+            33,
+            46
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 50,
+          "date": "2025-10-21",
+          "predicted": [
+            2,
+            11,
+            17,
+            18,
+            23,
+            35
+          ],
+          "actual": [
+            1,
+            8,
+            9,
+            11,
+            18,
+            32
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 54,
+          "date": "2025-10-11",
+          "predicted": [
+            1,
+            6,
+            9,
+            10,
+            36,
+            39
+          ],
+          "actual": [
+            5,
+            6,
+            18,
+            19,
+            30,
+            39
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 31,
+          "date": "2025-12-21",
+          "predicted": [
+            16,
+            20,
+            26,
+            39,
+            48,
+            49
+          ],
+          "actual": [
+            9,
+            17,
+            27,
+            34,
+            39,
+            47
+          ],
+          "matches": 1,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          16,
+          20,
+          26,
+          39,
+          48,
+          49
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          13,
+          19,
+          20,
+          29,
+          32,
+          36
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          4,
+          10,
+          11,
+          30,
+          35,
+          37
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          1,
+          11,
+          13,
+          18,
+          19,
+          42
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          1,
+          8,
+          14,
+          29,
+          36,
+          40
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          8,
+          30,
+          31,
+          37,
+          40,
+          43
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          1,
+          20,
+          35,
+          42,
+          46,
+          47
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          1,
+          9,
+          22,
+          28,
+          41,
+          49
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          6,
+          10,
+          15,
+          21,
+          24,
+          46
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          3,
+          14,
+          17,
+          27,
+          35,
+          42
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 0,
+        "used_fallback": false
+      }
+    ]
+  },
+  "smart_hybrid": {
+    "stats": {
+      "algorithm": "smart_hybrid",
+      "total_predictions": 28,
+      "average_matches": 0.6071428571428571,
+      "confidence_interval_95": [
+        0.30238142092018866,
+        0.9119042933655255
+      ],
+      "std_deviation": 0.7859547491585427,
+      "match_distribution": {
+        "1": 7,
+        "2": 5,
+        "0": 16
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 33,
+          "date": "2025-12-16",
+          "predicted": [
+            4,
+            9,
+            12,
+            17,
+            22,
+            28
+          ],
+          "actual": [
+            3,
+            12,
+            23,
+            28,
+            35,
+            38
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 40,
+          "date": "2025-11-18",
+          "predicted": [
+            2,
+            5,
+            10,
+            14,
+            19,
+            47
+          ],
+          "actual": [
+            2,
+            4,
+            10,
+            26,
+            28,
+            36
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 44,
+          "date": "2025-11-08",
+          "predicted": [
+            7,
+            14,
+            24,
+            32,
+            35,
+            46
+          ],
+          "actual": [
+            7,
+            9,
+            16,
+            17,
+            33,
+            46
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 57,
+          "date": "2025-09-30",
+          "predicted": [
+            13,
+            19,
+            24,
+            28,
+            42,
+            46
+          ],
+          "actual": [
+            13,
+            21,
+            33,
+            41,
+            44,
+            46
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 58,
+          "date": "2025-09-27",
+          "predicted": [
+            2,
+            6,
+            8,
+            21,
+            26,
+            45
+          ],
+          "actual": [
+            8,
+            14,
+            16,
+            18,
+            26,
+            48
+          ],
+          "matches": 2,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          4,
+          14,
+          17,
+          24,
+          25,
+          35
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          2,
+          3,
+          13,
+          28,
+          32,
+          48
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          4,
+          9,
+          12,
+          17,
+          22,
+          28
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          14,
+          23,
+          25,
+          37,
+          38,
+          43
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          6,
+          9,
+          10,
+          15,
+          23,
+          29
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          3,
+          9,
+          24,
+          28,
+          29,
+          33
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          12,
+          23,
+          28,
+          31,
+          35,
+          49
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          9,
+          12,
+          23,
+          34,
+          39,
+          47
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          2,
+          4,
+          6,
+          17,
+          38,
+          45
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          2,
+          5,
+          10,
+          14,
+          19,
+          47
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 2,
+        "used_fallback": false
+      }
+    ]
+  },
+  "pair_weighted": {
+    "stats": {
+      "algorithm": "pair_weighted",
+      "total_predictions": 28,
+      "average_matches": 0.75,
+      "confidence_interval_95": [
+        0.4783632497586124,
+        1.0216367502413877
+      ],
+      "std_deviation": 0.700528900717694,
+      "match_distribution": {
+        "1": 13,
+        "0": 11,
+        "2": 4
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 35,
+          "date": "2025-12-11",
+          "predicted": [
+            3,
+            16,
+            25,
+            34,
+            35,
+            42
+          ],
+          "actual": [
+            1,
+            5,
+            6,
+            25,
+            30,
+            42
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 37,
+          "date": "2025-12-02",
+          "predicted": [
+            1,
+            6,
+            11,
+            28,
+            36,
+            37
+          ],
+          "actual": [
+            6,
+            18,
+            29,
+            34,
+            37,
+            38
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 38,
+          "date": "2025-11-25",
+          "predicted": [
+            14,
+            16,
+            17,
+            32,
+            36,
+            37
+          ],
+          "actual": [
+            1,
+            2,
+            17,
+            35,
+            37,
+            48
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 42,
+          "date": "2025-11-13",
+          "predicted": [
+            7,
+            10,
+            16,
+            19,
+            25,
+            37
+          ],
+          "actual": [
+            10,
+            11,
+            28,
+            30,
+            37,
+            39
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 31,
+          "date": "2025-12-21",
+          "predicted": [
+            1,
+            9,
+            12,
+            16,
+            28,
+            35
+          ],
+          "actual": [
+            9,
+            17,
+            27,
+            34,
+            39,
+            47
+          ],
+          "matches": 1,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          1,
+          9,
+          12,
+          16,
+          28,
+          35
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          12,
+          17,
+          19,
+          21,
+          22,
+          30
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          1,
+          2,
+          4,
+          15,
+          35,
+          43
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          4,
+          8,
+          33,
+          42,
+          47,
+          48
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          3,
+          16,
+          25,
+          34,
+          35,
+          42
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          4,
+          18,
+          22,
+          25,
+          46,
+          47
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          1,
+          6,
+          11,
+          28,
+          36,
+          37
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          14,
+          16,
+          17,
+          32,
+          36,
+          37
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          1,
+          2,
+          18,
+          24,
+          39,
+          45
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          11,
+          14,
+          20,
+          22,
+          31,
+          38
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 0,
+        "used_fallback": false
+      }
+    ]
+  },
+  "gap_weighted": {
+    "stats": {
+      "algorithm": "gap_weighted",
+      "total_predictions": 28,
+      "average_matches": 0.6785714285714286,
+      "confidence_interval_95": [
+        0.4189136003189992,
+        0.9382292568238579
+      ],
+      "std_deviation": 0.6696362433535825,
+      "match_distribution": {
+        "0": 12,
+        "1": 13,
+        "2": 3
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 34,
+          "date": "2025-12-13",
+          "predicted": [
+            9,
+            19,
+            28,
+            34,
+            35,
+            46
+          ],
+          "actual": [
+            10,
+            17,
+            19,
+            28,
+            45,
+            49
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 50,
+          "date": "2025-10-21",
+          "predicted": [
+            9,
+            28,
+            32,
+            33,
+            39,
+            43
+          ],
+          "actual": [
+            1,
+            8,
+            9,
+            11,
+            18,
+            32
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 57,
+          "date": "2025-09-30",
+          "predicted": [
+            7,
+            21,
+            24,
+            43,
+            44,
+            48
+          ],
+          "actual": [
+            13,
+            21,
+            33,
+            41,
+            44,
+            46
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 32,
+          "date": "2025-12-18",
+          "predicted": [
+            7,
+            8,
+            13,
+            14,
+            17,
+            33
+          ],
+          "actual": [
+            6,
+            23,
+            28,
+            31,
+            33,
+            34
+          ],
+          "matches": 1,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 35,
+          "date": "2025-12-11",
+          "predicted": [
+            4,
+            9,
+            21,
+            24,
+            26,
+            30
+          ],
+          "actual": [
+            1,
+            5,
+            6,
+            25,
+            30,
+            42
+          ],
+          "matches": 1,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          2,
+          3,
+          8,
+          36,
+          45,
+          46
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          7,
+          8,
+          13,
+          14,
+          17,
+          33
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          9,
+          14,
+          24,
+          25,
+          42,
+          43
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          9,
+          19,
+          28,
+          34,
+          35,
+          46
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          4,
+          9,
+          21,
+          24,
+          26,
+          30
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          1,
+          7,
+          15,
+          35,
+          40,
+          44
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          3,
+          10,
+          12,
+          21,
+          36,
+          46
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          6,
+          17,
+          23,
+          24,
+          38,
+          45
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          15,
+          17,
+          24,
+          28,
+          30,
+          45
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          6,
+          7,
+          19,
+          22,
+          23,
+          40
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 0,
+        "used_fallback": false
+      }
+    ]
+  },
+  "ensemble": {
+    "stats": {
+      "algorithm": "ensemble",
+      "total_predictions": 28,
+      "average_matches": 0.75,
+      "confidence_interval_95": [
+        0.42258697383334803,
+        1.077413026166652
+      ],
+      "std_deviation": 0.8443713418650368,
+      "match_distribution": {
+        "2": 4,
+        "0": 13,
+        "1": 10,
+        "3": 1
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 49,
+          "date": "2025-10-23",
+          "predicted": [
+            4,
+            10,
+            11,
+            19,
+            24,
+            48
+          ],
+          "actual": [
+            4,
+            19,
+            24,
+            25,
+            26,
+            46
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 31,
+          "date": "2025-12-21",
+          "predicted": [
+            4,
+            14,
+            15,
+            17,
+            30,
+            34
+          ],
+          "actual": [
+            9,
+            17,
+            27,
+            34,
+            39,
+            47
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 33,
+          "date": "2025-12-16",
+          "predicted": [
+            1,
+            6,
+            16,
+            25,
+            28,
+            35
+          ],
+          "actual": [
+            3,
+            12,
+            23,
+            28,
+            35,
+            38
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 46,
+          "date": "2025-11-04",
+          "predicted": [
+            2,
+            19,
+            24,
+            28,
+            31,
+            46
+          ],
+          "actual": [
+            19,
+            20,
+            26,
+            28,
+            39,
+            44
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 54,
+          "date": "2025-10-11",
+          "predicted": [
+            2,
+            17,
+            19,
+            28,
+            30,
+            45
+          ],
+          "actual": [
+            5,
+            6,
+            18,
+            19,
+            30,
+            39
+          ],
+          "matches": 2,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          4,
+          14,
+          15,
+          17,
+          30,
+          34
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          2,
+          13,
+          16,
+          35,
+          39,
+          44
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          1,
+          6,
+          16,
+          25,
+          28,
+          35
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          6,
+          12,
+          14,
+          15,
+          23,
+          37
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          4,
+          5,
+          35,
+          36,
+          38,
+          44
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          16,
+          20,
+          27,
+          42,
+          43,
+          47
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          6,
+          10,
+          12,
+          15,
+          25,
+          28
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          6,
+          11,
+          12,
+          19,
+          23,
+          35
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          2,
+          9,
+          18,
+          21,
+          23,
+          36
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          6,
+          12,
+          14,
+          33,
+          37,
+          39
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 0,
+        "used_fallback": false
+      }
+    ]
+  }
+}

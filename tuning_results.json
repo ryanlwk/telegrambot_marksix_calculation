@@ -1,14 +1,14 @@
 {
-  "optimal_decay_factor": 0.92,
-  "optimal_pair_boost": 0.05,
-  "optimal_day_weight": 0.2,
-  "tuned_avg_matches": 0.7142857142857143,
-  "default_avg_matches": 0.75,
-  "improvement_percent": -4.761904761904756,
-  "cross_validation_score": 0.9199999999999999,
-  "cross_validation_range": 0.3999999999999999,
-  "overfit_warning": false,
-  "tuned_on_draws": 58,
-  "test_cases": 28,
-  "tuned_at": "2026-03-13T15:32:59.063636"
+  "optimal_decay_factor": 0.9,
+  "optimal_pair_boost": 0.2,
+  "optimal_day_weight": 0.1,
+  "tuned_avg_matches": 0.9285714285714286,
+  "default_avg_matches": 0.7857142857142857,
+  "improvement_percent": 18.181818181818187,
+  "cross_validation_score": 0.7769230769230769,
+  "cross_validation_range": 0.5,
+  "overfit_warning": true,
+  "tuned_on_draws": 162,
+  "test_cases": 132,
+  "tuned_at": "2026-03-13T15:46:07.485387"
 }

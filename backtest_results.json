@@ -2,97 +2,97 @@
   "weighted_ensemble": {
     "stats": {
       "algorithm": "weighted_ensemble",
-      "total_predictions": 28,
-      "average_matches": 1.0357142857142858,
+      "total_predictions": 132,
+      "average_matches": 0.7954545454545454,
       "confidence_interval_95": [
-        0.6628591244944442,
-        1.4085694469341274
+        0.6613394932961358,
+        0.929569597612955
       ],
-      "std_deviation": 0.9615628812527939,
+      "std_deviation": 0.7789074003860328,
       "match_distribution": {
-        "0": 10,
-        "1": 9,
-        "2": 7,
-        "3": 2
+        "0": 53,
+        "1": 56,
+        "2": 20,
+        "3": 3
       },
       "fallback_rate": 0.0,
       "best_predictions": [
         {
-          "draw_index": 38,
-          "date": "2025-11-25",
+          "draw_index": 46,
+          "date": "2025-11-04",
           "predicted": [
             1,
             16,
+            19,
+            20,
             37,
-            39,
-            44,
-            48
-          ],
-          "actual": [
-            1,
-            2,
-            17,
-            35,
-            37,
-            48
-          ],
-          "matches": 3,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 55,
-          "date": "2025-10-09",
-          "predicted": [
-            1,
-            7,
-            18,
-            24,
-            32,
             39
           ],
           "actual": [
-            1,
-            3,
-            24,
-            31,
+            19,
+            20,
+            26,
+            28,
             39,
-            45
+            44
           ],
           "matches": 3,
           "used_fallback": false
         },
         {
-          "draw_index": 34,
-          "date": "2025-12-13",
+          "draw_index": 123,
+          "date": "2025-04-10",
           "predicted": [
-            6,
-            13,
-            19,
-            23,
-            25,
-            28
+            4,
+            21,
+            26,
+            32,
+            35,
+            41
           ],
           "actual": [
-            10,
-            17,
-            19,
-            28,
-            45,
-            49
+            11,
+            22,
+            23,
+            26,
+            32,
+            35
           ],
-          "matches": 2,
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 151,
+          "date": "2025-02-04",
+          "predicted": [
+            3,
+            11,
+            18,
+            24,
+            29,
+            36
+          ],
+          "actual": [
+            3,
+            13,
+            15,
+            18,
+            19,
+            24
+          ],
+          "matches": 3,
           "used_fallback": false
         },
         {
           "draw_index": 37,
           "date": "2025-12-02",
           "predicted": [
-            8,
-            21,
-            34,
-            35,
+            6,
+            13,
+            15,
+            19,
             38,
-            47
+            42
           ],
           "actual": [
             6,
@@ -106,23 +106,23 @@
           "used_fallback": false
         },
         {
-          "draw_index": 40,
-          "date": "2025-11-18",
+          "draw_index": 44,
+          "date": "2025-11-08",
           "predicted": [
-            3,
-            25,
-            26,
-            28,
-            44,
-            48
+            11,
+            16,
+            17,
+            24,
+            36,
+            49
           ],
           "actual": [
-            2,
-            4,
-            10,
-            26,
-            28,
-            36
+            7,
+            9,
+            16,
+            17,
+            33,
+            46
           ],
           "matches": 2,
           "used_fallback": false
@@ -134,12 +134,12 @@
         "draw_index": 31,
         "date": "2025-12-21",
         "predicted": [
-          1,
-          16,
-          24,
+          10,
+          13,
+          21,
+          22,
           25,
-          35,
-          44
+          36
         ],
         "actual": [
           9,
@@ -159,9 +159,9 @@
           2,
           15,
           34,
-          36,
-          39,
-          47
+          35,
+          37,
+          42
         ],
         "actual": [
           6,
@@ -178,12 +178,12 @@
         "draw_index": 33,
         "date": "2025-12-16",
         "predicted": [
-          6,
-          15,
-          18,
-          25,
-          27,
-          35
+          5,
+          14,
+          30,
+          31,
+          38,
+          46
         ],
         "actual": [
           3,
@@ -200,12 +200,12 @@
         "draw_index": 34,
         "date": "2025-12-13",
         "predicted": [
-          6,
-          13,
-          19,
-          23,
-          25,
-          28
+          8,
+          9,
+          11,
+          37,
+          42,
+          46
         ],
         "actual": [
           10,
@@ -215,19 +215,19 @@
           45,
           49
         ],
-        "matches": 2,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 35,
         "date": "2025-12-11",
         "predicted": [
-          2,
+          9,
           10,
-          17,
-          26,
-          34,
-          37
+          12,
+          22,
+          24,
+          49
         ],
         "actual": [
           1,
@@ -244,11 +244,11 @@
         "draw_index": 36,
         "date": "2025-12-06",
         "predicted": [
-          2,
-          13,
-          15,
-          37,
-          38,
+          1,
+          3,
+          6,
+          20,
+          30,
           46
         ],
         "actual": [
@@ -259,19 +259,19 @@
           34,
           40
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 37,
         "date": "2025-12-02",
         "predicted": [
-          8,
-          21,
-          34,
-          35,
+          6,
+          13,
+          15,
+          19,
           38,
-          47
+          42
         ],
         "actual": [
           6,
@@ -288,12 +288,12 @@
         "draw_index": 38,
         "date": "2025-11-25",
         "predicted": [
-          1,
-          16,
-          37,
-          39,
-          44,
-          48
+          3,
+          17,
+          18,
+          24,
+          30,
+          42
         ],
         "actual": [
           1,
@@ -303,18 +303,18 @@
           37,
           48
         ],
-        "matches": 3,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 39,
         "date": "2025-11-20",
         "predicted": [
-          3,
-          12,
-          14,
-          31,
-          39,
+          2,
+          18,
+          34,
+          35,
+          37,
           49
         ],
         "actual": [
@@ -332,12 +332,12 @@
         "draw_index": 40,
         "date": "2025-11-18",
         "predicted": [
-          3,
-          25,
-          26,
+          9,
+          12,
+          17,
+          27,
           28,
-          44,
-          48
+          39
         ],
         "actual": [
           2,
@@ -347,7 +347,7 @@
           28,
           36
         ],
-        "matches": 2,
+        "matches": 1,
         "used_fallback": false
       }
     ]
@@ -355,129 +355,129 @@
   "ensemble": {
     "stats": {
       "algorithm": "ensemble",
-      "total_predictions": 28,
-      "average_matches": 0.7857142857142857,
+      "total_predictions": 132,
+      "average_matches": 0.7651515151515151,
       "confidence_interval_95": [
-        0.46288924477292365,
-        1.1085393266556478
+        0.6308320776154999,
+        0.8994709526875304
       ],
-      "std_deviation": 0.832539304250372,
+      "std_deviation": 0.7800944206390599,
       "match_distribution": {
-        "1": 14,
-        "0": 11,
-        "3": 2,
-        "2": 1
+        "1": 57,
+        "0": 55,
+        "2": 16,
+        "3": 4
       },
       "fallback_rate": 0.0,
       "best_predictions": [
         {
-          "draw_index": 33,
-          "date": "2025-12-16",
+          "draw_index": 65,
+          "date": "2025-09-09",
           "predicted": [
-            6,
-            12,
-            28,
-            35,
-            39,
-            49
+            11,
+            15,
+            22,
+            32,
+            37,
+            40
           ],
           "actual": [
-            3,
-            12,
-            23,
-            28,
-            35,
-            38
-          ],
-          "matches": 3,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 34,
-          "date": "2025-12-13",
-          "predicted": [
-            2,
             7,
-            10,
-            17,
-            38,
-            49
-          ],
-          "actual": [
-            10,
-            17,
-            19,
-            28,
-            45,
-            49
-          ],
-          "matches": 3,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 46,
-          "date": "2025-11-04",
-          "predicted": [
-            5,
-            17,
-            19,
-            20,
-            30,
-            34
-          ],
-          "actual": [
-            19,
-            20,
-            26,
-            28,
-            39,
+            15,
+            32,
+            40,
+            42,
             44
           ],
-          "matches": 2,
+          "matches": 3,
           "used_fallback": false
         },
         {
-          "draw_index": 31,
-          "date": "2025-12-21",
+          "draw_index": 143,
+          "date": "2025-02-22",
           "predicted": [
-            6,
             14,
-            25,
-            27,
-            36,
-            38
-          ],
-          "actual": [
-            9,
             17,
-            27,
-            34,
-            39,
-            47
-          ],
-          "matches": 1,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 35,
-          "date": "2025-12-11",
-          "predicted": [
-            4,
-            9,
-            28,
-            37,
+            20,
+            35,
             41,
             42
           ],
           "actual": [
-            1,
-            5,
-            6,
-            25,
-            30,
+            14,
+            15,
+            20,
+            27,
+            41,
+            44
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 153,
+          "date": "2025-01-25",
+          "predicted": [
+            4,
+            7,
+            14,
+            19,
+            24,
             42
           ],
-          "matches": 1,
+          "actual": [
+            7,
+            14,
+            19,
+            31,
+            36,
+            45
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 158,
+          "date": "2025-01-14",
+          "predicted": [
+            3,
+            17,
+            18,
+            26,
+            27,
+            48
+          ],
+          "actual": [
+            3,
+            5,
+            11,
+            12,
+            18,
+            48
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 37,
+          "date": "2025-12-02",
+          "predicted": [
+            6,
+            12,
+            21,
+            23,
+            34,
+            36
+          ],
+          "actual": [
+            6,
+            18,
+            29,
+            34,
+            37,
+            38
+          ],
+          "matches": 2,
           "used_fallback": false
         }
       ]
@@ -487,12 +487,12 @@
         "draw_index": 31,
         "date": "2025-12-21",
         "predicted": [
-          6,
-          14,
+          3,
+          4,
+          20,
           25,
-          27,
-          36,
-          38
+          39,
+          46
         ],
         "actual": [
           9,
@@ -509,12 +509,12 @@
         "draw_index": 32,
         "date": "2025-12-18",
         "predicted": [
-          8,
-          12,
-          20,
-          24,
-          37,
-          45
+          9,
+          13,
+          18,
+          19,
+          31,
+          40
         ],
         "actual": [
           6,
@@ -524,19 +524,19 @@
           33,
           34
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 33,
         "date": "2025-12-16",
         "predicted": [
-          6,
-          12,
-          28,
-          35,
-          39,
-          49
+          3,
+          7,
+          34,
+          37,
+          44,
+          47
         ],
         "actual": [
           3,
@@ -546,7 +546,7 @@
           35,
           38
         ],
-        "matches": 3,
+        "matches": 1,
         "used_fallback": false
       },
       {
@@ -554,11 +554,11 @@
         "date": "2025-12-13",
         "predicted": [
           2,
-          7,
-          10,
-          17,
-          38,
-          49
+          9,
+          24,
+          39,
+          40,
+          47
         ],
         "actual": [
           10,
@@ -568,19 +568,19 @@
           45,
           49
         ],
-        "matches": 3,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 35,
         "date": "2025-12-11",
         "predicted": [
-          4,
-          9,
+          12,
+          20,
           28,
-          37,
-          41,
-          42
+          35,
+          38,
+          41
         ],
         "actual": [
           1,
@@ -590,19 +590,19 @@
           30,
           42
         ],
-        "matches": 1,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 36,
         "date": "2025-12-06",
         "predicted": [
-          5,
+          1,
           6,
           15,
-          18,
-          37,
-          49
+          42,
+          44,
+          46
         ],
         "actual": [
           4,
@@ -620,11 +620,11 @@
         "date": "2025-12-02",
         "predicted": [
           6,
+          12,
+          21,
           23,
-          39,
-          40,
-          47,
-          49
+          34,
+          36
         ],
         "actual": [
           6,
@@ -634,19 +634,19 @@
           37,
           38
         ],
-        "matches": 1,
+        "matches": 2,
         "used_fallback": false
       },
       {
         "draw_index": 38,
         "date": "2025-11-25",
         "predicted": [
-          5,
-          9,
-          24,
+          17,
+          27,
           28,
-          45,
-          48
+          38,
+          41,
+          46
         ],
         "actual": [
           1,
@@ -663,10 +663,10 @@
         "draw_index": 39,
         "date": "2025-11-20",
         "predicted": [
-          9,
-          14,
+          10,
           21,
-          23,
+          25,
+          27,
           28,
           37
         ],
@@ -685,12 +685,12 @@
         "draw_index": 40,
         "date": "2025-11-18",
         "predicted": [
-          1,
-          7,
-          14,
-          22,
-          25,
-          35
+          12,
+          24,
+          28,
+          31,
+          37,
+          41
         ],
         "actual": [
           2,
@@ -700,7 +700,7 @@
           28,
           36
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       }
     ]
@@ -708,128 +708,129 @@
   "recency_weighted": {
     "stats": {
       "algorithm": "recency_weighted",
-      "total_predictions": 28,
-      "average_matches": 0.5,
+      "total_predictions": 132,
+      "average_matches": 0.7272727272727273,
       "confidence_interval_95": [
-        0.27612693678592287,
-        0.7238730632140771
+        0.5942551823258303,
+        0.8602902722196243
       ],
-      "std_deviation": 0.5773502691896257,
+      "std_deviation": 0.772533347099199,
       "match_distribution": {
-        "1": 12,
-        "0": 15,
-        "2": 1
+        "0": 60,
+        "1": 50,
+        "2": 20,
+        "3": 2
       },
       "fallback_rate": 0.0,
       "best_predictions": [
         {
-          "draw_index": 36,
-          "date": "2025-12-06",
+          "draw_index": 59,
+          "date": "2025-09-25",
           "predicted": [
-            1,
             6,
-            13,
-            17,
+            11,
+            18,
             28,
-            39
+            46,
+            47
           ],
           "actual": [
+            2,
+            11,
+            22,
+            27,
+            46,
+            47
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 60,
+          "date": "2025-09-20",
+          "predicted": [
+            8,
+            13,
+            17,
+            20,
+            37,
+            38
+          ],
+          "actual": [
+            8,
+            13,
+            17,
+            24,
+            36,
+            43
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 38,
+          "date": "2025-11-25",
+          "predicted": [
             4,
-            6,
-            26,
+            24,
             28,
-            34,
-            40
+            35,
+            37,
+            49
+          ],
+          "actual": [
+            1,
+            2,
+            17,
+            35,
+            37,
+            48
           ],
           "matches": 2,
           "used_fallback": false
         },
         {
-          "draw_index": 31,
-          "date": "2025-12-21",
+          "draw_index": 48,
+          "date": "2025-10-25",
           "predicted": [
-            16,
-            24,
-            25,
-            32,
-            36,
-            39
+            7,
+            20,
+            22,
+            30,
+            39,
+            40
           ],
           "actual": [
-            9,
-            17,
+            6,
+            7,
             27,
-            34,
+            36,
             39,
-            47
+            43
           ],
-          "matches": 1,
+          "matches": 2,
           "used_fallback": false
         },
         {
-          "draw_index": 33,
-          "date": "2025-12-16",
+          "draw_index": 49,
+          "date": "2025-10-23",
           "predicted": [
-            14,
-            15,
+            4,
+            19,
+            21,
             28,
             33,
-            34,
-            37
+            45
           ],
           "actual": [
-            3,
-            12,
-            23,
-            28,
-            35,
-            38
-          ],
-          "matches": 1,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 34,
-          "date": "2025-12-13",
-          "predicted": [
-            9,
-            12,
-            25,
-            27,
-            28,
-            47
-          ],
-          "actual": [
-            10,
-            17,
-            19,
-            28,
-            45,
-            49
-          ],
-          "matches": 1,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 40,
-          "date": "2025-11-18",
-          "predicted": [
-            2,
-            6,
-            14,
-            29,
-            38,
-            39
-          ],
-          "actual": [
-            2,
             4,
-            10,
+            19,
+            24,
+            25,
             26,
-            28,
-            36
+            46
           ],
-          "matches": 1,
+          "matches": 2,
           "used_fallback": false
         }
       ]
@@ -839,12 +840,12 @@
         "draw_index": 31,
         "date": "2025-12-21",
         "predicted": [
-          16,
+          8,
+          10,
+          23,
           24,
-          25,
-          32,
-          36,
-          39
+          37,
+          49
         ],
         "actual": [
           9,
@@ -854,7 +855,7 @@
           39,
           47
         ],
-        "matches": 1,
+        "matches": 0,
         "used_fallback": false
       },
       {
@@ -862,11 +863,11 @@
         "date": "2025-12-18",
         "predicted": [
           1,
-          7,
-          14,
-          30,
+          9,
+          16,
+          24,
           37,
-          38
+          47
         ],
         "actual": [
           6,
@@ -883,12 +884,12 @@
         "draw_index": 33,
         "date": "2025-12-16",
         "predicted": [
-          14,
+          2,
+          3,
           15,
-          28,
-          33,
-          34,
-          37
+          25,
+          30,
+          43
         ],
         "actual": [
           3,
@@ -905,12 +906,12 @@
         "draw_index": 34,
         "date": "2025-12-13",
         "predicted": [
-          9,
-          12,
-          25,
+          7,
+          11,
           27,
-          28,
-          47
+          31,
+          32,
+          44
         ],
         "actual": [
           10,
@@ -920,19 +921,19 @@
           45,
           49
         ],
-        "matches": 1,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 35,
         "date": "2025-12-11",
         "predicted": [
-          4,
-          7,
-          20,
-          44,
-          45,
-          49
+          6,
+          12,
+          15,
+          28,
+          31,
+          44
         ],
         "actual": [
           1,
@@ -942,19 +943,19 @@
           30,
           42
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 36,
         "date": "2025-12-06",
         "predicted": [
-          1,
-          6,
-          13,
-          17,
-          28,
-          39
+          11,
+          19,
+          22,
+          24,
+          37,
+          43
         ],
         "actual": [
           4,
@@ -964,19 +965,19 @@
           34,
           40
         ],
-        "matches": 2,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 37,
         "date": "2025-12-02",
         "predicted": [
-          1,
           7,
-          12,
-          35,
-          42,
-          49
+          21,
+          28,
+          31,
+          34,
+          45
         ],
         "actual": [
           6,
@@ -986,18 +987,18 @@
           37,
           38
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 38,
         "date": "2025-11-25",
         "predicted": [
-          6,
-          23,
-          39,
-          40,
-          44,
+          4,
+          24,
+          28,
+          35,
+          37,
           49
         ],
         "actual": [
@@ -1008,19 +1009,19 @@
           37,
           48
         ],
-        "matches": 0,
+        "matches": 2,
         "used_fallback": false
       },
       {
         "draw_index": 39,
         "date": "2025-11-20",
         "predicted": [
-          16,
-          23,
-          24,
-          42,
-          45,
-          48
+          1,
+          4,
+          8,
+          32,
+          39,
+          44
         ],
         "actual": [
           19,
@@ -1030,19 +1031,19 @@
           36,
           39
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 40,
         "date": "2025-11-18",
         "predicted": [
-          2,
-          6,
-          14,
-          29,
-          38,
-          39
+          13,
+          17,
+          19,
+          36,
+          37,
+          48
         ],
         "actual": [
           2,
@@ -1060,743 +1061,82 @@
   "cold_number": {
     "stats": {
       "algorithm": "cold_number",
-      "total_predictions": 28,
-      "average_matches": 0.7857142857142857,
+      "total_predictions": 132,
+      "average_matches": 0.7272727272727273,
       "confidence_interval_95": [
-        0.44607683842758517,
-        1.1253517330009863
+        0.5994612208604746,
+        0.85508423368498
       ],
-      "std_deviation": 0.8758971213537394,
+      "std_deviation": 0.7422979493860495,
       "match_distribution": {
-        "1": 9,
-        "0": 13,
-        "2": 5,
-        "3": 1
+        "0": 56,
+        "1": 59,
+        "2": 14,
+        "3": 3
       },
       "fallback_rate": 0.0,
       "best_predictions": [
         {
-          "draw_index": 52,
-          "date": "2025-10-16",
+          "draw_index": 67,
+          "date": "2025-09-02",
           "predicted": [
-            11,
-            14,
+            12,
+            23,
+            24,
             29,
-            32,
-            42,
-            48
+            30,
+            34
           ],
           "actual": [
-            2,
-            11,
-            32,
-            40,
-            43,
-            48
+            5,
+            18,
+            23,
+            24,
+            29,
+            49
           ],
           "matches": 3,
           "used_fallback": false
         },
         {
-          "draw_index": 36,
-          "date": "2025-12-06",
+          "draw_index": 114,
+          "date": "2025-05-03",
           "predicted": [
-            6,
-            15,
-            16,
-            26,
-            38,
-            47
-          ],
-          "actual": [
-            4,
-            6,
-            26,
-            28,
-            34,
-            40
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 38,
-          "date": "2025-11-25",
-          "predicted": [
-            7,
-            13,
-            14,
-            16,
-            17,
-            35
-          ],
-          "actual": [
-            1,
-            2,
-            17,
-            35,
-            37,
-            48
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 45,
-          "date": "2025-11-06",
-          "predicted": [
-            4,
-            13,
-            14,
-            17,
             19,
-            33
-          ],
-          "actual": [
-            10,
-            17,
+            20,
             22,
             33,
-            40,
-            41
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 48,
-          "date": "2025-10-25",
-          "predicted": [
-            2,
-            15,
-            32,
-            36,
-            43,
-            47
+            47,
+            49
           ],
           "actual": [
-            6,
-            7,
-            27,
-            36,
-            39,
-            43
-          ],
-          "matches": 2,
-          "used_fallback": false
-        }
-      ]
-    },
-    "sample_predictions": [
-      {
-        "draw_index": 31,
-        "date": "2025-12-21",
-        "predicted": [
-          6,
-          10,
-          16,
-          23,
-          39,
-          44
-        ],
-        "actual": [
-          9,
-          17,
-          27,
-          34,
-          39,
-          47
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 32,
-        "date": "2025-12-18",
-        "predicted": [
-          9,
-          16,
-          20,
-          27,
-          28,
-          47
-        ],
-        "actual": [
-          6,
-          23,
-          28,
-          31,
-          33,
-          34
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 33,
-        "date": "2025-12-16",
-        "predicted": [
-          13,
-          14,
-          23,
-          27,
-          42,
-          47
-        ],
-        "actual": [
-          3,
-          12,
-          23,
-          28,
-          35,
-          38
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 34,
-        "date": "2025-12-13",
-        "predicted": [
-          12,
-          31,
-          34,
-          36,
-          38,
-          47
-        ],
-        "actual": [
-          10,
-          17,
-          19,
-          28,
-          45,
-          49
-        ],
-        "matches": 0,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 35,
-        "date": "2025-12-11",
-        "predicted": [
-          14,
-          36,
-          37,
-          41,
-          47,
-          48
-        ],
-        "actual": [
-          1,
-          5,
-          6,
-          25,
-          30,
-          42
-        ],
-        "matches": 0,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 36,
-        "date": "2025-12-06",
-        "predicted": [
-          6,
-          15,
-          16,
-          26,
-          38,
-          47
-        ],
-        "actual": [
-          4,
-          6,
-          26,
-          28,
-          34,
-          40
-        ],
-        "matches": 2,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 37,
-        "date": "2025-12-02",
-        "predicted": [
-          10,
-          28,
-          33,
-          34,
-          36,
-          49
-        ],
-        "actual": [
-          6,
-          18,
-          29,
-          34,
-          37,
-          38
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 38,
-        "date": "2025-11-25",
-        "predicted": [
-          7,
-          13,
-          14,
-          16,
-          17,
-          35
-        ],
-        "actual": [
-          1,
-          2,
-          17,
-          35,
-          37,
-          48
-        ],
-        "matches": 2,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 39,
-        "date": "2025-11-20",
-        "predicted": [
-          3,
-          14,
-          27,
-          29,
-          32,
-          33
-        ],
-        "actual": [
-          19,
-          26,
-          33,
-          35,
-          36,
-          39
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 40,
-        "date": "2025-11-18",
-        "predicted": [
-          11,
-          21,
-          24,
-          40,
-          43,
-          48
-        ],
-        "actual": [
-          2,
-          4,
-          10,
-          26,
-          28,
-          36
-        ],
-        "matches": 0,
-        "used_fallback": false
-      }
-    ]
-  },
-  "pair_weighted": {
-    "stats": {
-      "algorithm": "pair_weighted",
-      "total_predictions": 28,
-      "average_matches": 1.0714285714285714,
-      "confidence_interval_95": [
-        0.756083118271099,
-        1.3867740245860438
-      ],
-      "std_deviation": 0.8132500607904443,
-      "match_distribution": {
-        "2": 10,
-        "1": 10,
-        "0": 8
-      },
-      "fallback_rate": 0.0,
-      "best_predictions": [
-        {
-          "draw_index": 31,
-          "date": "2025-12-21",
-          "predicted": [
-            9,
-            24,
-            27,
-            32,
-            37,
-            38
-          ],
-          "actual": [
-            9,
-            17,
-            27,
-            34,
-            39,
-            47
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 33,
-          "date": "2025-12-16",
-          "predicted": [
-            4,
-            28,
-            31,
-            38,
-            45,
-            46
-          ],
-          "actual": [
-            3,
-            12,
-            23,
-            28,
-            35,
-            38
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 38,
-          "date": "2025-11-25",
-          "predicted": [
-            12,
-            19,
-            24,
+            18,
+            20,
+            30,
             35,
             47,
-            48
+            49
           ],
-          "actual": [
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 137,
+          "date": "2025-03-08",
+          "predicted": [
             1,
-            2,
-            17,
-            35,
-            37,
-            48
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 47,
-          "date": "2025-10-28",
-          "predicted": [
-            9,
-            15,
-            24,
-            25,
-            30,
-            46
-          ],
-          "actual": [
-            4,
-            7,
-            15,
-            21,
-            45,
-            46
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 48,
-          "date": "2025-10-25",
-          "predicted": [
-            7,
-            10,
-            20,
+            23,
+            26,
             28,
             29,
-            39
-          ],
-          "actual": [
-            6,
-            7,
-            27,
-            36,
-            39,
-            43
-          ],
-          "matches": 2,
-          "used_fallback": false
-        }
-      ]
-    },
-    "sample_predictions": [
-      {
-        "draw_index": 31,
-        "date": "2025-12-21",
-        "predicted": [
-          9,
-          24,
-          27,
-          32,
-          37,
-          38
-        ],
-        "actual": [
-          9,
-          17,
-          27,
-          34,
-          39,
-          47
-        ],
-        "matches": 2,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 32,
-        "date": "2025-12-18",
-        "predicted": [
-          2,
-          10,
-          12,
-          13,
-          23,
-          35
-        ],
-        "actual": [
-          6,
-          23,
-          28,
-          31,
-          33,
-          34
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 33,
-        "date": "2025-12-16",
-        "predicted": [
-          4,
-          28,
-          31,
-          38,
-          45,
-          46
-        ],
-        "actual": [
-          3,
-          12,
-          23,
-          28,
-          35,
-          38
-        ],
-        "matches": 2,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 34,
-        "date": "2025-12-13",
-        "predicted": [
-          22,
-          23,
-          35,
-          39,
-          42,
-          49
-        ],
-        "actual": [
-          10,
-          17,
-          19,
-          28,
-          45,
-          49
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 35,
-        "date": "2025-12-11",
-        "predicted": [
-          8,
-          19,
-          23,
-          28,
-          40,
-          44
-        ],
-        "actual": [
-          1,
-          5,
-          6,
-          25,
-          30,
-          42
-        ],
-        "matches": 0,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 36,
-        "date": "2025-12-06",
-        "predicted": [
-          4,
-          10,
-          18,
-          19,
-          36,
-          37
-        ],
-        "actual": [
-          4,
-          6,
-          26,
-          28,
-          34,
-          40
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 37,
-        "date": "2025-12-02",
-        "predicted": [
-          1,
-          7,
-          12,
-          37,
-          42,
-          45
-        ],
-        "actual": [
-          6,
-          18,
-          29,
-          34,
-          37,
-          38
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 38,
-        "date": "2025-11-25",
-        "predicted": [
-          12,
-          19,
-          24,
-          35,
-          47,
-          48
-        ],
-        "actual": [
-          1,
-          2,
-          17,
-          35,
-          37,
-          48
-        ],
-        "matches": 2,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 39,
-        "date": "2025-11-20",
-        "predicted": [
-          1,
-          2,
-          28,
-          35,
-          38,
-          46
-        ],
-        "actual": [
-          19,
-          26,
-          33,
-          35,
-          36,
-          39
-        ],
-        "matches": 1,
-        "used_fallback": false
-      },
-      {
-        "draw_index": 40,
-        "date": "2025-11-18",
-        "predicted": [
-          9,
-          12,
-          15,
-          24,
-          44,
-          49
-        ],
-        "actual": [
-          2,
-          4,
-          10,
-          26,
-          28,
-          36
-        ],
-        "matches": 0,
-        "used_fallback": false
-      }
-    ]
-  },
-  "weighted_frequency": {
-    "stats": {
-      "algorithm": "weighted_frequency",
-      "total_predictions": 28,
-      "average_matches": 0.8571428571428571,
-      "confidence_interval_95": [
-        0.5282147232718309,
-        1.1860709910138834
-      ],
-      "std_deviation": 0.8482786803738024,
-      "match_distribution": {
-        "0": 11,
-        "1": 11,
-        "2": 5,
-        "3": 1
-      },
-      "fallback_rate": 0.0,
-      "best_predictions": [
-        {
-          "draw_index": 39,
-          "date": "2025-11-20",
-          "predicted": [
-            2,
-            26,
-            33,
-            37,
-            39,
-            42
+            32
           ],
           "actual": [
             19,
+            25,
             26,
-            33,
-            35,
-            36,
+            29,
+            32,
             39
           ],
           "matches": 3,
@@ -1806,12 +1146,12 @@
           "draw_index": 33,
           "date": "2025-12-16",
           "predicted": [
-            2,
-            18,
-            27,
-            28,
+            1,
+            12,
+            26,
+            32,
             38,
-            39
+            41
           ],
           "actual": [
             3,
@@ -1820,28 +1160,6 @@
             28,
             35,
             38
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 35,
-          "date": "2025-12-11",
-          "predicted": [
-            4,
-            10,
-            19,
-            25,
-            28,
-            42
-          ],
-          "actual": [
-            1,
-            5,
-            6,
-            25,
-            30,
-            42
           ],
           "matches": 2,
           "used_fallback": false
@@ -1850,12 +1168,12 @@
           "draw_index": 43,
           "date": "2025-11-11",
           "predicted": [
-            1,
-            2,
-            28,
-            35,
-            36,
-            38
+            6,
+            15,
+            20,
+            23,
+            25,
+            37
           ],
           "actual": [
             18,
@@ -1864,28 +1182,6 @@
             37,
             38,
             40
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 47,
-          "date": "2025-10-28",
-          "predicted": [
-            4,
-            23,
-            24,
-            27,
-            37,
-            46
-          ],
-          "actual": [
-            4,
-            7,
-            15,
-            21,
-            45,
-            46
           ],
           "matches": 2,
           "used_fallback": false
@@ -1899,10 +1195,10 @@
         "predicted": [
           3,
           4,
-          30,
-          36,
-          37,
-          44
+          24,
+          29,
+          38,
+          43
         ],
         "actual": [
           9,
@@ -1919,12 +1215,12 @@
         "draw_index": 32,
         "date": "2025-12-18",
         "predicted": [
-          2,
-          17,
-          21,
-          34,
-          42,
-          44
+          8,
+          26,
+          33,
+          37,
+          46,
+          48
         ],
         "actual": [
           6,
@@ -1941,12 +1237,12 @@
         "draw_index": 33,
         "date": "2025-12-16",
         "predicted": [
-          2,
-          18,
-          27,
-          28,
+          1,
+          12,
+          26,
+          32,
           38,
-          39
+          41
         ],
         "actual": [
           3,
@@ -1964,9 +1260,9 @@
         "date": "2025-12-13",
         "predicted": [
           7,
-          9,
-          23,
-          44,
+          18,
+          29,
+          39,
           47,
           48
         ],
@@ -1987,10 +1283,10 @@
         "predicted": [
           4,
           10,
-          19,
+          13,
+          17,
           25,
-          28,
-          42
+          44
         ],
         "actual": [
           1,
@@ -2000,19 +1296,19 @@
           30,
           42
         ],
-        "matches": 2,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 36,
         "date": "2025-12-06",
         "predicted": [
-          5,
-          6,
           10,
-          12,
+          11,
           22,
-          37
+          28,
+          32,
+          33
         ],
         "actual": [
           4,
@@ -2029,12 +1325,12 @@
         "draw_index": 37,
         "date": "2025-12-02",
         "predicted": [
-          3,
           7,
-          12,
-          24,
-          30,
-          42
+          9,
+          17,
+          26,
+          32,
+          33
         ],
         "actual": [
           6,
@@ -2051,12 +1347,365 @@
         "draw_index": 38,
         "date": "2025-11-25",
         "predicted": [
-          10,
+          9,
+          29,
+          30,
+          32,
+          44,
+          47
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          2,
+          9,
+          16,
           25,
+          36,
+          40
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          4,
+          15,
+          33,
+          41,
+          42,
+          49
+        ],
+        "actual": [
+          2,
+          4,
+          10,
           26,
           28,
+          36
+        ],
+        "matches": 1,
+        "used_fallback": false
+      }
+    ]
+  },
+  "pair_weighted": {
+    "stats": {
+      "algorithm": "pair_weighted",
+      "total_predictions": 132,
+      "average_matches": 0.6666666666666666,
+      "confidence_interval_95": [
+        0.5396085820144723,
+        0.793724751318861
+      ],
+      "std_deviation": 0.737922260191759,
+      "match_distribution": {
+        "2": 18,
+        "0": 64,
+        "1": 49,
+        "3": 1
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 81,
+          "date": "2025-07-29",
+          "predicted": [
+            17,
+            21,
+            25,
+            28,
+            35,
+            44
+          ],
+          "actual": [
+            9,
+            11,
+            17,
+            28,
+            35,
+            43
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 31,
+          "date": "2025-12-21",
+          "predicted": [
+            13,
+            23,
+            28,
+            39,
+            46,
+            47
+          ],
+          "actual": [
+            9,
+            17,
+            27,
+            34,
+            39,
+            47
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 37,
+          "date": "2025-12-02",
+          "predicted": [
+            4,
+            16,
+            22,
+            34,
+            37,
+            47
+          ],
+          "actual": [
+            6,
+            18,
+            29,
+            34,
+            37,
+            38
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 41,
+          "date": "2025-11-16",
+          "predicted": [
+            6,
+            10,
+            33,
+            38,
+            39,
+            47
+          ],
+          "actual": [
+            2,
+            11,
+            13,
+            28,
+            38,
+            47
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 42,
+          "date": "2025-11-13",
+          "predicted": [
+            1,
+            19,
+            24,
+            25,
+            28,
+            37
+          ],
+          "actual": [
+            10,
+            11,
+            28,
+            30,
+            37,
+            39
+          ],
+          "matches": 2,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          13,
+          23,
+          28,
+          39,
+          46,
+          47
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          24,
+          30,
+          39,
+          44,
+          46,
+          47
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          3,
+          6,
+          9,
+          14,
+          22,
+          43
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          3,
+          6,
+          7,
+          28,
+          30,
+          34
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          3,
+          9,
+          19,
+          20,
+          36,
+          42
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          3,
+          4,
+          20,
+          30,
+          38,
+          49
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          4,
+          16,
+          22,
+          34,
           37,
-          46
+          47
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 2,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          3,
+          4,
+          6,
+          15,
+          38,
+          48
         ],
         "actual": [
           1,
@@ -2073,12 +1722,12 @@
         "draw_index": 39,
         "date": "2025-11-20",
         "predicted": [
-          2,
-          26,
-          33,
-          37,
-          39,
-          42
+          3,
+          8,
+          20,
+          40,
+          44,
+          49
         ],
         "actual": [
           19,
@@ -2088,19 +1737,372 @@
           36,
           39
         ],
-        "matches": 3,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 40,
         "date": "2025-11-18",
         "predicted": [
-          1,
-          15,
-          28,
-          30,
-          40,
+          10,
+          17,
+          20,
+          21,
+          23,
           47
+        ],
+        "actual": [
+          2,
+          4,
+          10,
+          26,
+          28,
+          36
+        ],
+        "matches": 1,
+        "used_fallback": false
+      }
+    ]
+  },
+  "weighted_frequency": {
+    "stats": {
+      "algorithm": "weighted_frequency",
+      "total_predictions": 132,
+      "average_matches": 0.6590909090909091,
+      "confidence_interval_95": [
+        0.5353483412567317,
+        0.7828334769250864
+      ],
+      "std_deviation": 0.7186665499333195,
+      "match_distribution": {
+        "0": 62,
+        "1": 55,
+        "2": 13,
+        "3": 2
+      },
+      "fallback_rate": 0.0,
+      "best_predictions": [
+        {
+          "draw_index": 140,
+          "date": "2025-03-01",
+          "predicted": [
+            4,
+            20,
+            21,
+            25,
+            29,
+            35
+          ],
+          "actual": [
+            4,
+            15,
+            22,
+            25,
+            29,
+            42
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 143,
+          "date": "2025-02-22",
+          "predicted": [
+            11,
+            14,
+            15,
+            38,
+            41,
+            48
+          ],
+          "actual": [
+            14,
+            15,
+            20,
+            27,
+            41,
+            44
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 41,
+          "date": "2025-11-16",
+          "predicted": [
+            11,
+            25,
+            28,
+            34,
+            44,
+            45
+          ],
+          "actual": [
+            2,
+            11,
+            13,
+            28,
+            38,
+            47
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 57,
+          "date": "2025-09-30",
+          "predicted": [
+            6,
+            13,
+            17,
+            18,
+            38,
+            46
+          ],
+          "actual": [
+            13,
+            21,
+            33,
+            41,
+            44,
+            46
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 69,
+          "date": "2025-08-28",
+          "predicted": [
+            9,
+            18,
+            24,
+            25,
+            48,
+            49
+          ],
+          "actual": [
+            5,
+            36,
+            39,
+            44,
+            48,
+            49
+          ],
+          "matches": 2,
+          "used_fallback": false
+        }
+      ]
+    },
+    "sample_predictions": [
+      {
+        "draw_index": 31,
+        "date": "2025-12-21",
+        "predicted": [
+          2,
+          15,
+          21,
+          32,
+          45,
+          48
+        ],
+        "actual": [
+          9,
+          17,
+          27,
+          34,
+          39,
+          47
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 32,
+        "date": "2025-12-18",
+        "predicted": [
+          4,
+          6,
+          12,
+          19,
+          24,
+          37
+        ],
+        "actual": [
+          6,
+          23,
+          28,
+          31,
+          33,
+          34
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 33,
+        "date": "2025-12-16",
+        "predicted": [
+          6,
+          9,
+          12,
+          13,
+          24,
+          47
+        ],
+        "actual": [
+          3,
+          12,
+          23,
+          28,
+          35,
+          38
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 34,
+        "date": "2025-12-13",
+        "predicted": [
+          5,
+          9,
+          11,
+          32,
+          45,
+          46
+        ],
+        "actual": [
+          10,
+          17,
+          19,
+          28,
+          45,
+          49
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 35,
+        "date": "2025-12-11",
+        "predicted": [
+          7,
+          10,
+          12,
+          16,
+          38,
+          47
+        ],
+        "actual": [
+          1,
+          5,
+          6,
+          25,
+          30,
+          42
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 36,
+        "date": "2025-12-06",
+        "predicted": [
+          1,
+          2,
+          18,
+          25,
+          37,
+          39
+        ],
+        "actual": [
+          4,
+          6,
+          26,
+          28,
+          34,
+          40
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 37,
+        "date": "2025-12-02",
+        "predicted": [
+          2,
+          12,
+          13,
+          23,
+          28,
+          47
+        ],
+        "actual": [
+          6,
+          18,
+          29,
+          34,
+          37,
+          38
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 38,
+        "date": "2025-11-25",
+        "predicted": [
+          6,
+          17,
+          24,
+          27,
+          30,
+          34
+        ],
+        "actual": [
+          1,
+          2,
+          17,
+          35,
+          37,
+          48
+        ],
+        "matches": 1,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 39,
+        "date": "2025-11-20",
+        "predicted": [
+          1,
+          3,
+          25,
+          30,
+          38,
+          40
+        ],
+        "actual": [
+          19,
+          26,
+          33,
+          35,
+          36,
+          39
+        ],
+        "matches": 0,
+        "used_fallback": false
+      },
+      {
+        "draw_index": 40,
+        "date": "2025-11-18",
+        "predicted": [
+          9,
+          12,
+          14,
+          30,
+          36,
+          45
         ],
         "actual": [
           2,
@@ -2118,31 +2120,53 @@
   "gap_weighted": {
     "stats": {
       "algorithm": "gap_weighted",
-      "total_predictions": 28,
-      "average_matches": 0.8571428571428571,
+      "total_predictions": 132,
+      "average_matches": 0.7424242424242424,
       "confidence_interval_95": [
-        0.5116992209407845,
-        1.2025864933449297
+        0.6102082489283243,
+        0.8746402359201606
       ],
-      "std_deviation": 0.8908708063747479,
+      "std_deviation": 0.7678781324390269,
       "match_distribution": {
-        "1": 12,
-        "0": 11,
-        "3": 2,
-        "2": 3
+        "1": 49,
+        "0": 59,
+        "2": 23,
+        "3": 1
       },
       "fallback_rate": 0.0,
       "best_predictions": [
         {
+          "draw_index": 54,
+          "date": "2025-10-11",
+          "predicted": [
+            6,
+            9,
+            18,
+            19,
+            32,
+            49
+          ],
+          "actual": [
+            5,
+            6,
+            18,
+            19,
+            30,
+            39
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
           "draw_index": 34,
           "date": "2025-12-13",
           "predicted": [
-            11,
-            17,
+            5,
             19,
-            28,
-            32,
-            34
+            30,
+            37,
+            38,
+            45
           ],
           "actual": [
             10,
@@ -2152,71 +2176,49 @@
             45,
             49
           ],
-          "matches": 3,
+          "matches": 2,
           "used_fallback": false
         },
         {
-          "draw_index": 46,
-          "date": "2025-11-04",
+          "draw_index": 37,
+          "date": "2025-12-02",
           "predicted": [
-            1,
-            20,
-            23,
-            26,
-            28,
-            46
-          ],
-          "actual": [
+            3,
+            6,
             19,
-            20,
-            26,
-            28,
-            39,
-            44
-          ],
-          "matches": 3,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 38,
-          "date": "2025-11-25",
-          "predicted": [
-            15,
-            20,
-            29,
-            37,
-            44,
-            48
+            30,
+            34,
+            45
           ],
           "actual": [
-            1,
-            2,
-            17,
-            35,
+            6,
+            18,
+            29,
+            34,
             37,
-            48
+            38
           ],
           "matches": 2,
           "used_fallback": false
         },
         {
-          "draw_index": 41,
-          "date": "2025-11-16",
+          "draw_index": 45,
+          "date": "2025-11-06",
           "predicted": [
-            6,
-            9,
-            17,
-            28,
-            36,
-            38
+            22,
+            26,
+            34,
+            35,
+            39,
+            41
           ],
           "actual": [
-            2,
-            11,
-            13,
-            28,
-            38,
-            47
+            10,
+            17,
+            22,
+            33,
+            40,
+            41
           ],
           "matches": 2,
           "used_fallback": false
@@ -2225,12 +2227,12 @@
           "draw_index": 50,
           "date": "2025-10-21",
           "predicted": [
+            2,
+            7,
             11,
-            21,
-            28,
             32,
-            37,
-            46
+            33,
+            43
           ],
           "actual": [
             1,
@@ -2250,12 +2252,12 @@
         "draw_index": 31,
         "date": "2025-12-21",
         "predicted": [
-          1,
-          4,
-          6,
+          13,
           23,
-          27,
-          45
+          32,
+          38,
+          39,
+          46
         ],
         "actual": [
           9,
@@ -2272,12 +2274,12 @@
         "draw_index": 32,
         "date": "2025-12-18",
         "predicted": [
-          5,
-          7,
-          11,
-          16,
+          3,
+          14,
+          29,
           36,
-          38
+          37,
+          40
         ],
         "actual": [
           6,
@@ -2294,12 +2296,12 @@
         "draw_index": 33,
         "date": "2025-12-16",
         "predicted": [
-          7,
-          10,
-          27,
-          31,
-          47,
-          48
+          3,
+          6,
+          17,
+          29,
+          36,
+          45
         ],
         "actual": [
           3,
@@ -2309,19 +2311,19 @@
           35,
           38
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 34,
         "date": "2025-12-13",
         "predicted": [
-          11,
-          17,
+          5,
           19,
-          28,
-          32,
-          34
+          30,
+          37,
+          38,
+          45
         ],
         "actual": [
           10,
@@ -2331,19 +2333,19 @@
           45,
           49
         ],
-        "matches": 3,
+        "matches": 2,
         "used_fallback": false
       },
       {
         "draw_index": 35,
         "date": "2025-12-11",
         "predicted": [
-          5,
-          17,
-          18,
-          35,
-          40,
-          45
+          12,
+          15,
+          25,
+          28,
+          47,
+          48
         ],
         "actual": [
           1,
@@ -2360,12 +2362,12 @@
         "draw_index": 36,
         "date": "2025-12-06",
         "predicted": [
-          4,
-          9,
-          15,
-          24,
-          36,
-          37
+          8,
+          12,
+          28,
+          35,
+          37,
+          45
         ],
         "actual": [
           4,
@@ -2382,12 +2384,12 @@
         "draw_index": 37,
         "date": "2025-12-02",
         "predicted": [
-          1,
-          12,
-          15,
-          22,
-          27,
-          35
+          3,
+          6,
+          19,
+          30,
+          34,
+          45
         ],
         "actual": [
           6,
@@ -2397,19 +2399,19 @@
           37,
           38
         ],
-        "matches": 0,
+        "matches": 2,
         "used_fallback": false
       },
       {
         "draw_index": 38,
         "date": "2025-11-25",
         "predicted": [
-          15,
-          20,
+          19,
           29,
-          37,
-          44,
-          48
+          30,
+          36,
+          42,
+          43
         ],
         "actual": [
           1,
@@ -2419,19 +2421,19 @@
           37,
           48
         ],
-        "matches": 2,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 39,
         "date": "2025-11-20",
         "predicted": [
-          2,
-          11,
-          31,
-          36,
-          43,
-          44
+          12,
+          25,
+          28,
+          34,
+          39,
+          45
         ],
         "actual": [
           19,
@@ -2448,12 +2450,12 @@
         "draw_index": 40,
         "date": "2025-11-18",
         "predicted": [
-          9,
-          21,
-          27,
-          29,
-          36,
-          48
+          1,
+          6,
+          22,
+          38,
+          45,
+          49
         ],
         "actual": [
           2,
@@ -2463,7 +2465,7 @@
           28,
           36
         ],
-        "matches": 1,
+        "matches": 0,
         "used_fallback": false
       }
     ]
@@ -2471,118 +2473,75 @@
   "smart_hybrid": {
     "stats": {
       "algorithm": "smart_hybrid",
-      "total_predictions": 28,
-      "average_matches": 0.7857142857142857,
+      "total_predictions": 132,
+      "average_matches": 0.7727272727272727,
       "confidence_interval_95": [
-        0.5196255008380921,
-        1.0518030705904793
+        0.6371816704014688,
+        0.9082728750530766
       ],
-      "std_deviation": 0.686221153054517,
+      "std_deviation": 0.7872156856536017,
       "match_distribution": {
-        "0": 10,
-        "1": 14,
-        "2": 4
+        "1": 50,
+        "2": 23,
+        "3": 2,
+        "0": 57
       },
       "fallback_rate": 0.0,
       "best_predictions": [
         {
-          "draw_index": 35,
-          "date": "2025-12-11",
+          "draw_index": 36,
+          "date": "2025-12-06",
           "predicted": [
-            1,
-            3,
-            15,
-            28,
-            42,
-            48
-          ],
-          "actual": [
-            1,
-            5,
             6,
-            25,
-            30,
-            42
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 46,
-          "date": "2025-11-04",
-          "predicted": [
-            19,
-            26,
-            27,
-            31,
-            42,
-            46
-          ],
-          "actual": [
-            19,
-            20,
-            26,
-            28,
-            39,
-            44
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 48,
-          "date": "2025-10-25",
-          "predicted": [
-            1,
-            6,
-            7,
-            16,
-            40,
-            46
-          ],
-          "actual": [
-            6,
-            7,
-            27,
-            36,
-            39,
-            43
-          ],
-          "matches": 2,
-          "used_fallback": false
-        },
-        {
-          "draw_index": 56,
-          "date": "2025-10-06",
-          "predicted": [
-            12,
-            17,
-            24,
-            25,
-            28,
-            47
-          ],
-          "actual": [
-            15,
-            17,
             19,
             23,
-            24,
-            34
+            28,
+            34,
+            35
           ],
-          "matches": 2,
+          "actual": [
+            4,
+            6,
+            26,
+            28,
+            34,
+            40
+          ],
+          "matches": 3,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 154,
+          "date": "2025-01-23",
+          "predicted": [
+            3,
+            6,
+            11,
+            13,
+            37,
+            46
+          ],
+          "actual": [
+            3,
+            6,
+            24,
+            25,
+            34,
+            37
+          ],
+          "matches": 3,
           "used_fallback": false
         },
         {
           "draw_index": 32,
           "date": "2025-12-18",
           "predicted": [
-            17,
+            4,
+            16,
             19,
-            26,
-            29,
+            23,
             31,
-            38
+            32
           ],
           "actual": [
             6,
@@ -2592,7 +2551,51 @@
             33,
             34
           ],
-          "matches": 1,
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 38,
+          "date": "2025-11-25",
+          "predicted": [
+            19,
+            24,
+            33,
+            35,
+            37,
+            44
+          ],
+          "actual": [
+            1,
+            2,
+            17,
+            35,
+            37,
+            48
+          ],
+          "matches": 2,
+          "used_fallback": false
+        },
+        {
+          "draw_index": 44,
+          "date": "2025-11-08",
+          "predicted": [
+            2,
+            3,
+            7,
+            32,
+            33,
+            49
+          ],
+          "actual": [
+            7,
+            9,
+            16,
+            17,
+            33,
+            46
+          ],
+          "matches": 2,
           "used_fallback": false
         }
       ]
@@ -2602,12 +2605,12 @@
         "draw_index": 31,
         "date": "2025-12-21",
         "predicted": [
-          2,
-          3,
-          26,
+          28,
+          30,
           31,
-          38,
-          43
+          41,
+          47,
+          49
         ],
         "actual": [
           9,
@@ -2617,19 +2620,19 @@
           39,
           47
         ],
-        "matches": 0,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 32,
         "date": "2025-12-18",
         "predicted": [
-          17,
+          4,
+          16,
           19,
-          26,
-          29,
+          23,
           31,
-          38
+          32
         ],
         "actual": [
           6,
@@ -2639,19 +2642,19 @@
           33,
           34
         ],
-        "matches": 1,
+        "matches": 2,
         "used_fallback": false
       },
       {
         "draw_index": 33,
         "date": "2025-12-16",
         "predicted": [
-          5,
-          10,
-          19,
-          28,
-          37,
-          49
+          2,
+          12,
+          24,
+          42,
+          45,
+          47
         ],
         "actual": [
           3,
@@ -2668,12 +2671,12 @@
         "draw_index": 34,
         "date": "2025-12-13",
         "predicted": [
-          2,
-          4,
+          12,
           14,
-          19,
-          30,
-          35
+          17,
+          34,
+          38,
+          39
         ],
         "actual": [
           10,
@@ -2690,12 +2693,12 @@
         "draw_index": 35,
         "date": "2025-12-11",
         "predicted": [
-          1,
-          3,
-          15,
-          28,
-          42,
-          48
+          4,
+          19,
+          22,
+          25,
+          29,
+          38
         ],
         "actual": [
           1,
@@ -2705,19 +2708,19 @@
           30,
           42
         ],
-        "matches": 2,
+        "matches": 1,
         "used_fallback": false
       },
       {
         "draw_index": 36,
         "date": "2025-12-06",
         "predicted": [
-          3,
-          17,
+          6,
+          19,
+          23,
           28,
-          31,
-          38,
-          39
+          34,
+          35
         ],
         "actual": [
           4,
@@ -2727,19 +2730,19 @@
           34,
           40
         ],
-        "matches": 1,
+        "matches": 3,
         "used_fallback": false
       },
       {
         "draw_index": 37,
         "date": "2025-12-02",
         "predicted": [
-          17,
-          25,
-          30,
-          38,
-          44,
-          46
+          1,
+          10,
+          22,
+          26,
+          28,
+          35
         ],
         "actual": [
           6,
@@ -2749,19 +2752,19 @@
           37,
           38
         ],
-        "matches": 1,
+        "matches": 0,
         "used_fallback": false
       },
       {
         "draw_index": 38,
         "date": "2025-11-25",
         "predicted": [
-          13,
           19,
-          21,
-          28,
-          44,
-          47
+          24,
+          33,
+          35,
+          37,
+          44
         ],
         "actual": [
           1,
@@ -2771,19 +2774,19 @@
           37,
           48
         ],
-        "matches": 0,
+        "matches": 2,
         "used_fallback": false
       },
       {
         "draw_index": 39,
         "date": "2025-11-20",
         "predicted": [
-          5,
-          17,
-          24,
-          27,
+          2,
+          18,
           28,
-          37
+          45,
+          48,
+          49
         ],
         "actual": [
           19,
@@ -2800,12 +2803,12 @@
         "draw_index": 40,
         "date": "2025-11-18",
         "predicted": [
-          10,
-          30,
-          34,
-          37,
-          41,
-          43
+          3,
+          26,
+          27,
+          32,
+          42,
+          49
         ],
         "actual": [
           2,

@@ -61,9 +61,13 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "<b>📋 Commands:</b>\n"
         "/start - Show welcome message\n"
         "/help - Show this help message\n"
-        "/stats - Generate and send Mark Six trend chart\n"
-        "/predict - Generate AI prediction numbers (based on cold number algorithm)\n"
-        "/hot - Show top 5 most frequent numbers\n\n"
+        "/stats - Generate and send Mark Six trend chart + dataset info\n"
+        "/predict - Generate AI prediction (weighted ensemble, 162 draws)\n"
+        "/hot - Show top 5 most frequent numbers\n"
+        "/tune - Re-tune parameters (admin only)\n\n"
+        "<b>📊 Dataset:</b>\n"
+        "162 historical draws (2025-01-02 → 2026-03-12)\n"
+        "132 backtest cases with 95% confidence intervals\n\n"
         "💡 <i>Just send me a message or image!</i>"
     )
 
@@ -72,21 +76,37 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     """Generate and send Mark Six trend chart on demand."""
     try:
         await update.message.chat.send_action("upload_photo")
+
+        # Get dataset info
+        from prediction_engine import MarkSixEngine
+        import pandas as pd
         
+        engine = MarkSixEngine()
+        df = pd.read_csv("history.csv")
+        
+        dataset_info = (
+            f"📊 <b>Dataset Health</b>\n"
+            f"   • Total draws: {len(df)}\n"
+            f"   • Date range: {df['date'].iloc[-1]} → {df['date'].iloc[0]}\n"
+            f"   • Backtest cases: {len(df) - 30}\n"
+            f"   • Source: history.csv\n\n"
+        )
+
         # Generate chart using the agent tool
         result = await agent.run("Generate the latest trend chart.")
-        
+
         # Send the chart
         chart_path = Path(__file__).parent / "charts" / "chart_output.png"
         if chart_path.exists():
             with open(chart_path, 'rb') as f:
                 await update.message.reply_photo(
                     photo=f,
-                    caption=f"📊 Mark Six Number Frequency Trend Chart\n\n{result.output}"
+                    caption=f"{dataset_info}📈 <b>Frequency Trend Chart</b>\n\n{result.output}",
+                    parse_mode="HTML"
                 )
         else:
             await update.message.reply_text("Chart generation failed. Please try again later.")
-            
+
     except Exception as e:
         logger.error(f"Error generating chart: {e}", exc_info=True)
         await update.message.reply_text("Sorry, I couldn't generate the chart. Please try again later.")
